@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useRef, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {Keyboard, SafeAreaView, TextInput} from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/button/Button';
@@ -43,6 +44,7 @@ interface LoginFormFieldValues {
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
+  const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const {
     control,
@@ -95,14 +97,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
       dispatch(
         AppActions.showBottomNotificationModal({
           type: 'error',
-          title: 'Login failed',
+          title: t('Login failed'),
           message:
             loginError ||
-            'Could not log in. Please review your information and try again.',
+            t('Could not log in. Please review your information and try again.'),
           enableBackdropDismiss: false,
           actions: [
             {
-              text: 'OK',
+              text: t('OK'),
               action: () => {
                 dispatch(BitPayIdActions.updateLoginStatus(null));
               },
@@ -158,7 +160,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
             render={({field: {onChange, onBlur, value}}) => (
               <BoxInput
                 placeholder={'satoshi@example.com'}
-                label={'EMAIL'}
+                label={t('EMAIL')}
                 onBlur={onBlur}
                 onChangeText={(text: string) => onChange(text)}
                 error={errors.email?.message}
@@ -181,7 +183,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
               <BoxInput
                 ref={passwordRef}
                 placeholder={'strongPassword123'}
-                label={'PASSWORD'}
+                label={t('PASSWORD')}
                 type={'password'}
                 onBlur={onBlur}
                 onChangeText={(text: string) => onChange(text)}
@@ -202,12 +204,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
 
           <AuthActionRow>
             <AuthActionText>
-              Don't have an account?{' '}
+              {t(`Don't have an account?`)}{' '}
               <Link
                 onPress={() => {
                   navigation.navigate('CreateAccount');
                 }}>
-                Create Account
+                {t('Create Account')}
               </Link>
             </AuthActionText>
           </AuthActionRow>
@@ -215,7 +217,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
           <AuthActionRow>
             <AuthActionText>
               <Link onPress={() => onTroubleLoggingIn()}>
-                Trouble logging in?
+                {t('Trouble logging in?')}
               </Link>
             </AuthActionText>
           </AuthActionRow>
