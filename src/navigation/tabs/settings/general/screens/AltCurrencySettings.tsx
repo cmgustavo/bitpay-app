@@ -132,7 +132,7 @@ const AltCurrencySettings = () => {
   return (
     <AltCurrencySettingsContainer>
       <Header>
-        <Label>Search Currency</Label>
+        <Label>{t('Search Currency')}</Label>
         <SearchContainer>
           <SearchInput
             placeholder={''}
@@ -160,7 +160,7 @@ const AltCurrencySettings = () => {
               <GhostSvg style={{marginTop: 20}} />
             </NoResultsImgContainer>
             <NoResultsDescription>
-              {"We couldn't find a match for "}
+              {t("We couldn't find a match for ")}
               <BaseText style={{fontWeight: 'bold'}}>{searchVal}</BaseText>.
             </NoResultsDescription>
           </NoResultsContainer>
