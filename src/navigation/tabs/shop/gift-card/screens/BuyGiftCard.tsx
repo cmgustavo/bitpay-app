@@ -43,6 +43,7 @@ import {ShopActions} from '../../../../../store/shop';
 import {APP_NETWORK} from '../../../../../constants/config';
 import {useAppSelector} from '../../../../../utils/hooks';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useTranslation} from 'react-i18next';
 
 const GradientBox = styled(LinearGradient)`
   width: ${WIDTH}px;
@@ -111,6 +112,7 @@ const BuyGiftCard = ({
   route,
   navigation,
 }: StackScreenProps<GiftCardStackParamList, 'BuyGiftCard'>) => {
+  const {t} = useTranslation();
   const navigator = useNavigation();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -132,7 +134,9 @@ const BuyGiftCard = ({
     navigation.setOptions({
       headerTitle: () => {
         return (
-          <HeaderTitle>{`Buy ${cardConfig.displayName} Gift Card`}</HeaderTitle>
+          <HeaderTitle>
+            {t(`Buy ${cardConfig.displayName} Gift Card`)}
+          </HeaderTitle>
         );
       },
     });
@@ -146,18 +150,18 @@ const BuyGiftCard = ({
     dispatch(
       AppActions.showBottomNotificationModal({
         type: 'info',
-        title: 'Activation fee',
-        message: `${
+        title: t('Activation fee'),
+        message: t(`${
           cardConfig.displayName
         } gift cards contain an additional activation fee of ${formatFiatAmount(
           activationFee,
           cardConfig.currency,
           {currencyDisplay: 'symbol'},
-        )}.`,
+        )}.`),
         enableBackdropDismiss: true,
         actions: [
           {
-            text: 'GOT IT',
+            text: t('GOT IT'),
             action: async () => {
               await sleep(400);
               next(amount, phone);
@@ -200,12 +204,12 @@ const BuyGiftCard = ({
       dispatch(
         AppActions.showBottomNotificationModal(
           CustomErrorMessage({
-            title: 'Below Minimum Amount',
-            errMsg: `The purchase amount must be at least ${formatFiatAmount(
+            title: t('Below Minimum Amount'),
+            errMsg: t(`The purchase amount must be at least ${formatFiatAmount(
               minAmount,
               cardConfig.currency,
               {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-            )}. Please modify your amount.`,
+            )}. Please modify your amount.`),
           }),
         ),
       );
@@ -215,12 +219,12 @@ const BuyGiftCard = ({
       dispatch(
         AppActions.showBottomNotificationModal(
           CustomErrorMessage({
-            title: 'Purchase Limit Exceeded',
-            errMsg: `The purchase amount is limited to ${formatFiatAmount(
+            title: t('Purchase Limit Exceeded'),
+            errMsg: t(`The purchase amount is limited to ${formatFiatAmount(
               maxAmount,
               cardConfig.currency,
               {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-            )}. Please modify your amount.`,
+            )}. Please modify your amount.`),
           }),
         ),
       );
@@ -320,7 +324,7 @@ const BuyGiftCard = ({
                 />
                 <SupportedAmounts>
                   <SupportedAmountsLabel>
-                    Purchase Amounts:
+                    {t('Purchase Amounts:')}
                   </SupportedAmountsLabel>
                   <TextAlign align="center">
                     <GiftCardDenoms cardConfig={cardConfig} />
@@ -373,7 +377,7 @@ const BuyGiftCard = ({
           elevation: 5,
         }}>
         <Button onPress={() => buyGiftCard()} buttonStyle={'primary'}>
-          {cardConfig.supportedAmounts ? 'Continue' : 'Buy Gift Card'}
+          {cardConfig.supportedAmounts ? t('Continue') : t('Buy Gift Card')}
         </Button>
       </FooterButton>
     </>
