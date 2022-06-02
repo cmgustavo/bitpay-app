@@ -52,7 +52,7 @@ const DeleteConfirmationModal = ({
       <SheetContainer>
         <Header>
           <CautionSvg />
-          <Title>Warning!</Title>
+          <Title>{t('Warning!')}</Title>
         </Header>
 
         <DeleteModalParagraph>{description}</DeleteModalParagraph>
@@ -63,14 +63,14 @@ const DeleteConfirmationModal = ({
               haptic('impactLight');
               onPressOk();
             }}>
-            <Link>DELETE</Link>
+            <Link>{t('DELETE')}</Link>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               haptic('impactLight');
               onPressCancel();
             }}>
-            <SecondaryActionText>NEVERMIND</SecondaryActionText>
+            <SecondaryActionText>{t('NEVERMIND')}</SecondaryActionText>
           </TouchableOpacity>
         </ActionsContainer>
       </SheetContainer>
