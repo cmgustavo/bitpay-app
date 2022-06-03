@@ -21,7 +21,7 @@ import {useAppDispatch} from '../../../utils/hooks';
 import {useThemeType} from '../../../utils/hooks/useThemeType';
 import {OnboardingStackParamList} from '../OnboardingStack';
 import {OnboardingImage} from '../components/Containers';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const NotificationsContainer = styled.SafeAreaView`
   flex: 1;
@@ -127,7 +127,9 @@ const NotificationsScreen: React.VFC<
         <TextContainer>
           <TextAlign align={'center'}>
             <Paragraph>
-              {t('Get important updates on your account, new features, promos and more. You can change this at any time in Settings.')}
+              {t(
+                'Get important updates on your account, new features, promos and more. You can change this at any time in Settings.',
+              )}
             </Paragraph>
           </TextAlign>
         </TextContainer>

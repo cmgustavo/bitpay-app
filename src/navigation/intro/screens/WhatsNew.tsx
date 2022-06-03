@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import FocusedStatusBar from '../../../components/focused-status-bar/FocusedStatusBar';
@@ -55,7 +55,7 @@ const WhatsNew: React.VFC<WhatsNewScreenProps> = ({navigation}) => {
             right: 0,
           }}>
           <BodyContainer>
-            <IntroText>{t(`Here's what's new.`)}</IntroText>
+            <IntroText>{t("Here's what's new.")}</IntroText>
           </BodyContainer>
         </View>
 

@@ -2,7 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useRef, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {Keyboard, SafeAreaView, TextInput} from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/button/Button';
@@ -100,7 +100,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
           title: t('Login failed'),
           message:
             loginError ||
-            t('Could not log in. Please review your information and try again.'),
+            t(
+              'Could not log in. Please review your information and try again.',
+            ),
           enableBackdropDismiss: false,
           actions: [
             {
@@ -199,12 +201,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation, route}) => {
 
         <AuthActionsContainer>
           <AuthActionRow>
-            <Button onPress={onSubmit}>Log In</Button>
+            <Button onPress={onSubmit}>{t('Log In')}</Button>
           </AuthActionRow>
 
           <AuthActionRow>
             <AuthActionText>
-              {t(`Don't have an account?`)}{' '}
+              {t("Don't have an account?")}{' '}
               <Link
                 onPress={() => {
                   navigation.navigate('CreateAccount');

@@ -18,7 +18,7 @@ import Amount, {AmountParamList} from '../../../wallet/screens/Amount';
 import Confirm, {
   GiftCardConfirmParamList,
 } from '../../../wallet/screens/send/confirm/GiftCardConfirm';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export type GiftCardStackParamList = {
   BuyGiftCard: {cardConfig: CardConfig};

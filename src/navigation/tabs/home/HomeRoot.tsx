@@ -42,7 +42,7 @@ import {HeaderContainer, HomeContainer} from './components/Styled';
 import KeyMigrationFailureModal from './components/KeyMigrationFailureModal';
 import {batch} from 'react-redux';
 import {useThemeType} from '../../../utils/hooks/useThemeType';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const HomeRoot = () => {
   const {t} = useTranslation();
@@ -282,7 +282,7 @@ const HomeRoot = () => {
         {/* ////////////////////////////// SHOP WITH CRYPTO */}
         {memoizedShopWithCryptoCards.length ? (
           <HomeSection
-            title={t("Shop with Crypto")}
+            title={t('Shop with Crypto')}
             action="See all"
             onActionPress={() => navigation.navigate('Tabs', {screen: 'Shop'})}>
             <OffersCarousel contentCards={memoizedShopWithCryptoCards} />
@@ -291,14 +291,14 @@ const HomeRoot = () => {
 
         {/* ////////////////////////////// DO MORE */}
         {memoizedDoMoreCards.length ? (
-          <HomeSection title={t("Do More")}>
+          <HomeSection title={t('Do More')}>
             <AdvertisementsList contentCards={memoizedDoMoreCards} />
           </HomeSection>
         ) : null}
 
         {/* ////////////////////////////// EXCHANGE RATES */}
         {memoizedExchangeRates.length ? (
-          <HomeSection title={t("Exchange Rates")} label="1D">
+          <HomeSection title={t('Exchange Rates')} label="1D">
             <ExchangeRatesList
               items={memoizedExchangeRates}
               defaultAltCurrencyIsoCode={defaultAltCurrency.isoCode}
@@ -308,7 +308,7 @@ const HomeRoot = () => {
 
         {/* ////////////////////////////// QUICK LINKS - Leave feedback etc */}
         {memoizedQuickLinks.length ? (
-          <HomeSection title={t("Quick Links")}>
+          <HomeSection title={t('Quick Links')}>
             <QuickLinksCarousel contentCards={memoizedQuickLinks} />
           </HomeSection>
         ) : null}

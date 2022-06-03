@@ -53,6 +53,7 @@ interface CreateAccountFieldValues {
 const CreateAccountScreen: React.FC<CreateAccountScreenProps> = ({
   navigation,
 }) => {
+  const {t} = useTranslation();
   const {
     control,
     handleSubmit,
@@ -60,7 +61,6 @@ const CreateAccountScreen: React.FC<CreateAccountScreenProps> = ({
     getValues,
     setValue,
   } = useForm<CreateAccountFieldValues>({resolver: yupResolver(schema)});
-  const {t} = useTranslation();
   const familyNameRef = useRef<TextInput>(null);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -108,12 +108,12 @@ const CreateAccountScreen: React.FC<CreateAccountScreenProps> = ({
       dispatch(
         AppActions.showBottomNotificationModal({
           type: 'error',
-          title: 'Create account failed',
-          message: createAccountError || 'An unexpected error occurred.',
+          title: t('Create account failed'),
+          message: createAccountError || t('An unexpected error occurred.'),
           enableBackdropDismiss: false,
           actions: [
             {
-              text: 'OK',
+              text: t('OK'),
               action: () => {
                 dispatch(BitPayIdActions.updateCreateAccountStatus(null));
               },
@@ -266,7 +266,7 @@ const CreateAccountScreen: React.FC<CreateAccountScreenProps> = ({
                     onPress={() => setValue('agreedToTOSandPP', !field.value)}
                     checked={field.value}
                   />
-                  {/* add transalation */}
+
                   <CheckboxLabel>
                     I agree to the <A href={URL.TOU_BITPAY_ID}>Terms of Use</A>{' '}
                     and <A href={URL.PRIVACY_POLICY}>Privacy Policy</A>.

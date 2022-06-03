@@ -23,7 +23,7 @@ import {
   sortByDescendingDate,
 } from '../../../../lib/gift-cards/gift-card';
 import {ShopScreens} from '../ShopStack';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const MyGiftCardsHeaderContainer = styled(SectionHeaderContainer)`
   margin-bottom: -10px;
@@ -98,7 +98,9 @@ const MyGiftCards = ({
       <SectionContainer>
         <MyGiftCardsHeaderContainer>
           <SectionHeader>
-            {slideIndex === 0 ? t('My Gift Cards') : t('My Archived Gift Cards')}
+            {slideIndex === 0
+              ? t('My Gift Cards')
+              : t('My Archived Gift Cards')}
           </SectionHeader>
           {archivedGiftCards.length ? (
             <>

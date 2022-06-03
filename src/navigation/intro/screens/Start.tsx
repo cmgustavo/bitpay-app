@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import styled, {useTheme} from 'styled-components/native';
 import FeatureCard from '../../../components/feature-card/FeatureCard';
 import {IntroStackParamList} from '../IntroStack';
@@ -27,9 +27,9 @@ const Start: React.VFC<IntroStartScreenProps> = ({navigation}) => {
       <FeatureCard
         image={theme.dark ? darkImage : lightImage}
         descriptionTitle={t('Explore the new BitPay App')}
-        descriptionText={
-          t('Your home tab is now your launchpad. View all your keys and check out new offerings from BitPay.')
-        }
+        descriptionText={t(
+          'Your home tab is now your launchpad. View all your keys and check out new offerings from BitPay.',
+        )}
         ctaText={t('Check it out')}
         cta={onNext}
       />

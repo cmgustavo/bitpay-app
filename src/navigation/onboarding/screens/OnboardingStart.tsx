@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useCallback, useLayoutEffect, useRef, useState} from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {ScrollView, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useAndroidBackHandler} from 'react-navigation-backhandler';
@@ -187,23 +187,33 @@ const OnboardingStart: React.VFC<OnboardingStartScreenProps> = () => {
   const onboardingSlides = [
     {
       title: t('Turn crypto into dollars with our BitPay Card'),
-      text: t('Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates.'),
-      subText: t('*Currently available in the USA. More countries coming soon.'),
+      text: t(
+        'Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates.',
+      ),
+      subText: t(
+        '*Currently available in the USA. More countries coming soon.',
+      ),
       img: () => OnboardingImages.card[themeType],
     },
     {
       title: t('Spend crypto at your favorite places'),
-      text: t('Discover a curated list of places you can spend your crypto. Purchase, manage and spend store credits instantly.'),
+      text: t(
+        'Discover a curated list of places you can spend your crypto. Purchase, manage and spend store credits instantly.',
+      ),
       img: () => OnboardingImages.spend[themeType],
     },
     {
       title: t('Keep your funds safe & secure'),
-      text: t('Websites and exchanges get hacked. BitPay allows you to privately store, manage and use your crypto funds without having to trust a centralized bank or exchange.'),
+      text: t(
+        'Websites and exchanges get hacked. BitPay allows you to privately store, manage and use your crypto funds without having to trust a centralized bank or exchange.',
+      ),
       img: () => OnboardingImages.wallet[themeType],
     },
     {
       title: t('Seamlessly buy & swap with a decentralized exchange'),
-      text: t('Buy with a credit card or existing funds, then seamlessly swap coins at competitive rates without leaving the app.'),
+      text: t(
+        'Buy with a credit card or existing funds, then seamlessly swap coins at competitive rates without leaving the app.',
+      ),
       img: () => OnboardingImages.swap[themeType],
     },
   ];

@@ -4,7 +4,7 @@ import {APP_DEEPLINK_PREFIX} from '../../../../../constants/config';
 import {DEFAULT_CLASSIC_CONTENT_CARD} from '../../../../../utils/braze';
 import {OnboardingImage} from '../../../../onboarding/components/Containers';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const DefaultAdvertisements = (
   theme: 'dark' | 'light',
@@ -64,8 +64,9 @@ const DefaultAdvertisements = (
       id: 'dev_buyCrypto',
       image: imgSrc.buy[theme],
       title: t('Buy Crypto'),
-      cardDescription:
-t(        'Buy direct using your debit, credit card, or Apple Pay.'),
+      cardDescription: t(
+        'Buy direct using your debit, credit card, or Apple Pay.',
+      ),
       url: `${APP_DEEPLINK_PREFIX}buy/50`,
       openURLInWebView: false,
     },

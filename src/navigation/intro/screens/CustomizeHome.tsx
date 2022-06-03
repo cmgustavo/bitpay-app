@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import styled, {useTheme} from 'styled-components/native';
 import FocusedStatusBar from '../../../components/focused-status-bar/FocusedStatusBar';
 import {TextContainer} from '../../../components/styled/Containers';
@@ -54,7 +54,9 @@ const CustomizeHome: React.VFC<CustomizeHomeScreenProps> = ({navigation}) => {
         <BodyContainer>
           <TextContainer style={{marginTop: 50}}>
             <IntroText>
-              {t('Customize your home view. Choose what you want to see and how you see it.')}
+              {t(
+                'Customize your home view. Choose what you want to see and how you see it.',
+              )}
             </IntroText>
           </TextContainer>
         </BodyContainer>

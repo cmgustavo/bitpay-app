@@ -14,7 +14,7 @@ import {
   BottomNotificationCta,
   BottomNotificationHr,
 } from '../../../../components/modal/bottom-notification/BottomNotification';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const SheetTitleContainer = styled.View`
   margin-bottom: 25px;

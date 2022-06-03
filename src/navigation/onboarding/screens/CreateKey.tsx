@@ -17,7 +17,7 @@ import {
 import {H3, Paragraph, TextAlign} from '../../../components/styled/Text';
 import {useThemeType} from '../../../utils/hooks/useThemeType';
 import {OnboardingStackParamList} from '../OnboardingStack';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const CreateKeyContainer = styled.SafeAreaView`
   flex: 1;
@@ -81,7 +81,9 @@ const CreateOrImportKey: React.VFC<
         <TextContainer>
           <TextAlign align={'center'}>
             <Paragraph>
-              {t(`Store your assets safely and securely with BitPay's non-custodial app. Reminder: you own your keys, so be sure to have a pen and paper handy to write down your 12 words.`)}
+              {t(
+                "Store your assets safely and securely with BitPay's non-custodial app. Reminder: you own your keys, so be sure to have a pen and paper handy to write down your 12 words.",
+              )}
             </Paragraph>
           </TextAlign>
         </TextContainer>

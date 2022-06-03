@@ -10,7 +10,7 @@ import {
 } from '../../../../components/styled/Containers';
 import Checkbox from '../../../../components/checkbox/Checkbox';
 import {Alert, View, AppState, AppStateStatus, Linking} from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const Notifications = () => {
   const {t} = useTranslation();
@@ -39,7 +39,9 @@ const Notifications = () => {
   const openSettings = useCallback(() => {
     Alert.alert(
       t('Notifications Disabled'),
-      t('If you want to get important updates on your account, new features, promos and more, go to Settings and tap Allow Notifications.'),
+      t(
+        'If you want to get important updates on your account, new features, promos and more, go to Settings and tap Allow Notifications.',
+      ),
       [
         {
           text: t('Cancel'),

@@ -28,7 +28,7 @@ import {useAppDispatch} from '../../../utils/hooks';
 import {useThemeType} from '../../../utils/hooks/useThemeType';
 import {OnboardingStackParamList} from '../OnboardingStack';
 import {OnboardingImage} from '../components/Containers';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const PinImage = {
   light: (
@@ -126,7 +126,9 @@ const PinScreen: React.VFC<
         <TextContainer>
           <TextAlign align={'center'}>
             <Paragraph>
-              {t('Set up an extra layer of security to keep your wallet secure.')}
+              {t(
+                'Set up an extra layer of security to keep your wallet secure.',
+              )}
             </Paragraph>
           </TextAlign>
         </TextContainer>
