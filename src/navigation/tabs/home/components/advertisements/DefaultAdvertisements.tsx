@@ -4,12 +4,10 @@ import {APP_DEEPLINK_PREFIX} from '../../../../../constants/config';
 import {DEFAULT_CLASSIC_CONTENT_CARD} from '../../../../../utils/braze';
 import {OnboardingImage} from '../../../../onboarding/components/Containers';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
 
 const DefaultAdvertisements = (
   theme: 'dark' | 'light',
 ): ClassicContentCard[] => {
-  const {t} = useTranslation();
   const imgSrc = {
     buy: {
       light: (
@@ -45,8 +43,8 @@ const DefaultAdvertisements = (
       ...DEFAULT_CLASSIC_CONTENT_CARD,
       id: 'dev_card',
       image: CardIcon as any,
-      title: t('Get the BitPay Prepaid Mastercard®'),
-      cardDescription: t('Turn your crypto into dollars. Spend instantly.'),
+      title: 'Get the BitPay Prepaid Mastercard®',
+      cardDescription: 'Turn your crypto into dollars. Spend instantly.',
       url: `${APP_DEEPLINK_PREFIX}wallet-card/dashboard/signup`,
       openURLInWebView: false,
     },
@@ -54,8 +52,8 @@ const DefaultAdvertisements = (
       ...DEFAULT_CLASSIC_CONTENT_CARD,
       id: 'dev_swapCrypto',
       image: imgSrc.swap[theme],
-      title: t('Swap Crypto'),
-      cardDescription: t('Exchange ERC-20 Tokens or cross chain assets.'),
+      title: 'Swap Crypto',
+      cardDescription: 'Exchange ERC-20 Tokens or cross chain assets.',
       url: `${APP_DEEPLINK_PREFIX}swap`,
       openURLInWebView: false,
     },
@@ -63,10 +61,9 @@ const DefaultAdvertisements = (
       ...DEFAULT_CLASSIC_CONTENT_CARD,
       id: 'dev_buyCrypto',
       image: imgSrc.buy[theme],
-      title: t('Buy Crypto'),
-      cardDescription: t(
+      title: 'Buy Crypto',
+      cardDescription:
         'Buy direct using your debit, credit card, or Apple Pay.',
-      ),
       url: `${APP_DEEPLINK_PREFIX}buy/50`,
       openURLInWebView: false,
     },
