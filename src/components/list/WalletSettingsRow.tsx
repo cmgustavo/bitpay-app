@@ -65,7 +65,7 @@ const WalletSettingsRow = ({
       {hideWallet ? (
         <HiddenColumn>
           <HiddenContainer>
-            <H7>Hidden</H7>
+            <H7>{t('Hidden')}</H7>
           </HiddenContainer>
         </HiddenColumn>
       ) : null}
