@@ -44,6 +44,7 @@ import {
 import ReferredUsersSkeleton from '../../components/ReferredUsersSkeleton';
 import ReferralCodeSkeleton from '../../components/ReferralCodeSkeleton';
 import {BASE_BITPAY_URLS} from '../../../../constants/config';
+import {useTranslation} from 'react-i18next';
 
 export interface ReferralParamList {
   card: Card;
@@ -165,8 +166,11 @@ const Referral = ({}) => {
   }, [copied]);
 
   const onShareReferralCode = async () => {
+    const {t} = useTranslation();
     try {
-      const message = `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code}. ${BASE_BITPAY_URLS[network]}/card?code=${code}&ref=${givenName}`;
+      const message = t(
+        `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code}. ${BASE_BITPAY_URLS[network]}/card?code=${code}&ref=${givenName}`,
+      );
 
       await Share.share({
         message,
@@ -194,10 +198,11 @@ const Referral = ({}) => {
         </ReferralHeroContainer>
 
         <DescriptionContainer>
-          <H3> Refer a friend and get $10</H3>
+          <H3> {t('Refer a friend and get $10')}</H3>
           <Paragraph medium={true}>
-            Share the referral code below and we'll load $10 on your card and
-            your friend's card after they sign up and load their first $100.
+            {t(
+              "Share the referral code below and we'll load $10 on your card and your friend's card after they sign up and load their first $100.",
+            )}
           </Paragraph>
         </DescriptionContainer>
 
@@ -221,8 +226,9 @@ const Referral = ({}) => {
         ) : code === 'failed' ? (
           <FailedContainer>
             <H7>
-              Uh oh, something went wrong retrieving your referral code. Please
-              try again later.
+              {t(
+                'Uh oh, something went wrong retrieving your referral code. Please try again later.',
+              )}
             </H7>
           </FailedContainer>
         ) : (
@@ -233,10 +239,10 @@ const Referral = ({}) => {
 
         <ReferredUsersContainer>
           <CategoryRow>
-            <CategoryHeading>My Referrals</CategoryHeading>
+            <CategoryHeading>{t('My Referrals')}</CategoryHeading>
 
             <CategoryHeading style={{textAlign: 'right'}}>
-              Status
+              {t('Status')}
             </CategoryHeading>
           </CategoryRow>
 
@@ -246,7 +252,9 @@ const Referral = ({}) => {
             <>
               {referredUsers === 'failed' ? (
                 <FailedContainer noHorizontalMargin={true}>
-                  <H7>Uh oh, something went wrong. Please try again later.</H7>
+                  <H7>
+                    {t('Uh oh, something went wrong. Please try again later')}.
+                  </H7>
                 </FailedContainer>
               ) : null}
 
@@ -273,7 +281,7 @@ const Referral = ({}) => {
                                 <PresentSvg />
                               </HorizontalSpacing>
 
-                              <SettingTitle>$10 Earned</SettingTitle>
+                              <SettingTitle>{t('$10 Earned')}</SettingTitle>
                             </Row>
                           </View>
                         ) : (
@@ -290,8 +298,11 @@ const Referral = ({}) => {
                 <ZeroReferralsContainer>
                   <GhostSvg height={50} />
                   <VerticalSpacing>
-                    <H6>It looks like you have no referrals.</H6>
-                    <H6 style={{textAlign: 'center'}}> Go refer someone!</H6>
+                    <H6>{t('It looks like you have no referrals')}.</H6>
+                    <H6 style={{textAlign: 'center'}}>
+                      {' '}
+                      {t('Go refer someone')}!
+                    </H6>
                   </VerticalSpacing>
                 </ZeroReferralsContainer>
               )}
@@ -301,16 +312,9 @@ const Referral = ({}) => {
 
         <PromotionTermsContainer>
           <Smallest>
-            Promotion Terms: BitPay Cardholders may refer others to become new
-            Cardholders. If a referred person acquires a Card and loads at least
-            US$100 within 30 days of signing up for the Card, then BitPay will
-            provide an incentive US$10 Card load to both the referring
-            Cardholder and new Cardholder. The new Cardholder must not
-            previously have signed up for a virtual or physical BitPay Card. The
-            referred person must sign up using the referring Cardholder’s
-            referral code. BitPay reserves the right to modify this promotion or
-            discontinue eligibility for the promotion at any time and in its
-            sole discretion.
+            {t(
+              'Promotion Terms: BitPay Cardholders may refer others to become new Cardholders. If a referred person acquires a Card and loads at least US$100 within 30 days of signing up for the Card, then BitPay will provide an incentive US$10 Card load to both the referring Cardholder and new Cardholder. The new Cardholder must not previously have signed up for a virtual or physical BitPay Card. The referred person must sign up using the referring Cardholder’s referral code. BitPay reserves the right to modify this promotion or discontinue eligibility for the promotion at any time and in its sole discretion.',
+            )}
           </Smallest>
         </PromotionTermsContainer>
       </ScrollView>

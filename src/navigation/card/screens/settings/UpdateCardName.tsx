@@ -77,7 +77,7 @@ const UpdateCardNameScreen: React.FC<
       dispatch(CardActions.updateUpdateCardNameStatus(card.id, null));
 
       const notificationConfig = createErrorConfig(
-        'Failed to update card name. Please try again later.',
+        t('Failed to update card name. Please try again later.'),
         () => setButtonState(undefined),
       );
       dispatch(AppActions.showBottomNotificationModal(notificationConfig));
@@ -89,7 +89,7 @@ const UpdateCardNameScreen: React.FC<
       <ContentContainer>
         <FormContainer>
           <BoxInput
-            label="Card Name"
+            label={t('Card Name')}
             value={newName}
             onChangeText={(text: string) => setNewName(text)}
           />

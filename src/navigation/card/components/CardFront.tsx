@@ -249,7 +249,7 @@ const CardFront: React.FC<CardFrontProps> = props => {
 
       {!basic ? (
         <>
-          <CardBalanceLabelRow>BALANCE</CardBalanceLabelRow>
+          <CardBalanceLabelRow>{t('BALANCE')}</CardBalanceLabelRow>
 
           <CardBalanceValueRow>
             <CardBalance

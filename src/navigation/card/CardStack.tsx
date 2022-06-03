@@ -70,7 +70,7 @@ const CardStack = () => {
         name={CardScreens.PAIRING}
         component={CardPairingScreen}
         options={{
-          headerTitle: () => <HeaderTitle>Pairing...</HeaderTitle>,
+          headerTitle: () => <HeaderTitle>{t('Pairing...')}</HeaderTitle>,
         }}
       />
       <Card.Screen
