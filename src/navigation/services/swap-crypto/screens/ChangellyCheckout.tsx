@@ -365,7 +365,7 @@ const ChangellyCheckout: React.FC = () => {
       .then(data => {
         if (data.error) {
           const msg = t(
-            `Changelly getFixRateForAmount Error:  ${data.error.message}`,
+            `Changelly getFixRateForAmount Error: ${data.error.message}`,
           );
           showError(msg);
           return;

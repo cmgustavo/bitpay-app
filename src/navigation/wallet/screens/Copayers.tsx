@@ -137,7 +137,7 @@ const Copayers: React.FC<CopayersProps> = props => {
       <JoinCopayersContainer>
         <Paragraph>
           {t(
-            'Share this invitation with the devices joining this account. Each copayer has their own recovery phrase. To recover funds stored in aShared Wallet you will need the recovery phrase from each copayer.',
+            'Share this invitation with the devices joining this account. Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer.',
           )}
         </Paragraph>
         <TouchableOpacity

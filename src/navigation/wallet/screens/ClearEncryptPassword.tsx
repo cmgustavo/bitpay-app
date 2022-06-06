@@ -15,6 +15,7 @@ import Button from '../../../components/button/Button';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RouteProp} from '@react-navigation/core';
 import {WalletStackParamList} from '../WalletStack';
+import {useTranslation} from 'react-i18next';
 
 export type ClearEncryptPasswordParamList = {
   keyId: string;
@@ -40,6 +41,7 @@ const ClearEncryptPasswordParagraphLink = styled(Link)`
 `;
 
 const ClearEncryptPassword = () => {
+  const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const {
@@ -56,7 +58,7 @@ const ClearEncryptPassword = () => {
         </ClearEncryptPasswordParagraph>
         <ClearEncryptPasswordParagraph>
           {t(
-            'If you need to regain access to your wallet because you have forgotten or lost the encrypt password, you must restore the wallet using the 12word recovery phrase.',
+            'If you need to regain access to your wallet because you have forgotten or lost the encrypt password, you must restore the wallet using the 12 word recovery phrase.',
           )}
         </ClearEncryptPasswordParagraph>
         <ClearEncryptPasswordParagraph>

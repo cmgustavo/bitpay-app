@@ -254,7 +254,7 @@ const WalletInformation = () => {
 
                     {copayer.id === copayerId ? (
                       <InfoLabel>
-                        <H7>{t('(Me')})</H7>
+                        <H7>{t('(Me)')}</H7>
                       </InfoLabel>
                     ) : null}
                   </InfoSettingsRow>

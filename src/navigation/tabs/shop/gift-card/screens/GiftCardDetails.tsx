@@ -403,9 +403,8 @@ const GiftCardDetails = ({
                 <SectionSpacer />
                 <TextAlign align="center">
                   <Paragraph>
-                    {t(
-                      'If this issue persists for more than 2 hours, please&nbsp;',
-                    )}
+                    {t('If this issue persists for more than 2 hours, please')}
+                    &nbsp;
                     <Link
                       onPress={() =>
                         Linking.openURL(

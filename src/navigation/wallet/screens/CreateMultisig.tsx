@@ -348,7 +348,7 @@ const CreateMultisig = () => {
       <MultisigContainer>
         <Paragraph>
           {
-            "Multisig wallets require multisig devices to set up. It takes longer to complete but it's the recommended security configuration for longterm storage."
+            "Multisig wallets require multisig devices to set up. It takes longer to complete but it's the recommended security configuration for long term storage."
           }
         </Paragraph>
 
