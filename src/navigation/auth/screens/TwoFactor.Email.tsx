@@ -1,92 +1,99 @@
-import {yupResolver} from '@hookform/resolvers/yup';
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useEffect, useMemo} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector} from 'react-redux';
-import * as yup from 'yup';
-import Button from '../../../components/button/Button';
-import BoxInput from '../../../components/form/BoxInput';
-import {navigationRef, RootStacks} from '../../../Root';
-import {RootState} from '../../../store';
+import styled from 'styled-components/native';
+import Spinner from '../../../components/spinner/Spinner';
+import {
+  TWO_FACTOR_EMAIL_POLL_INTERVAL,
+  TWO_FACTOR_EMAIL_POLL_TIMEOUT,
+} from '../../../constants/config';
+import {navigationRef} from '../../../Root';
 import {AppActions} from '../../../store/app';
 import {BitPayIdActions, BitPayIdEffects} from '../../../store/bitpay-id';
-import {TwoFactorPairingStatus} from '../../../store/bitpay-id/bitpay-id.reducer';
-import {BitpayIdScreens} from '../../bitpay-id/BitpayIdStack';
+import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
 import {AuthStackParamList} from '../AuthStack';
 import AuthFormContainer, {
-  AuthActionsContainer,
   AuthFormParagraph,
-  AuthRowContainer,
 } from '../components/AuthFormContainer';
 
-export type TwoFactorPairingParamList = {
-  prevCode: string;
-};
+export type EmailAuthenticationParamList = {} | undefined;
 
-type TwoFactorPairingScreenProps = StackScreenProps<
+type EmailAuthenticationScreenProps = StackScreenProps<
   AuthStackParamList,
-  'TwoFactorPairing'
+  'EmailAuthentication'
 >;
 
-interface TwoFactorPairingFieldValues {
-  code: string;
-}
+const SpinnerWrapper = styled.View`
+  align-items: center;
+  margin-bottom: 32px;
+`;
 
-const TwoFactorPairing: React.FC<TwoFactorPairingScreenProps> = ({
+const EmailAuthentication: React.FC<EmailAuthenticationScreenProps> = ({
   navigation,
-  route,
 }) => {
   const {t} = useTranslation();
-  const dispatch = useDispatch();
-  const {prevCode} = route.params;
-  const schema = useMemo(() => {
-    return yup.object().shape({
-      code: yup
-        .string()
-        .required('Required')
-        .test(
-          'NoSameCode',
-          'Cannot use the same code twice.',
-          value => value !== prevCode,
-        ),
-    });
-  }, [prevCode]);
-  const twoFactorPairingStatus = useSelector<RootState, TwoFactorPairingStatus>(
-    ({BITPAY_ID}) => BITPAY_ID.twoFactorPairingStatus,
+  const dispatch = useAppDispatch();
+  const pollId = useRef<ReturnType<typeof setInterval>>();
+  const pollCountdown = useRef(TWO_FACTOR_EMAIL_POLL_TIMEOUT);
+  const isAuthenticated = useAppSelector(
+    ({BITPAY_ID}) => BITPAY_ID.session.isAuthenticated,
   );
-  const twoFactorPairingError = useSelector<RootState, string>(
-    ({BITPAY_ID}) => BITPAY_ID.twoFactorPairingError || '',
+  const csrfToken = useAppSelector(
+    ({BITPAY_ID}) => BITPAY_ID.session.csrfToken,
   );
-  const {
-    control,
-    formState: {errors, isValid},
-    handleSubmit,
-    resetField,
-  } = useForm<TwoFactorPairingFieldValues>({
-    resolver: yupResolver(schema),
-    mode: 'onChange',
-  });
+  const emailPairingStatus = useAppSelector(
+    ({BITPAY_ID}) => BITPAY_ID.emailPairingStatus,
+  );
+  const isTimedOut = pollCountdown.current <= 0;
 
+  // start polling session until authenticated
   useEffect(() => {
+    pollId.current = setInterval(() => {
+      dispatch(BitPayIdEffects.startFetchSession());
+      pollCountdown.current -= TWO_FACTOR_EMAIL_POLL_INTERVAL;
+    }, TWO_FACTOR_EMAIL_POLL_INTERVAL);
+
     return () => {
-      dispatch(BitPayIdActions.updateTwoFactorPairStatus(null));
+      dispatch(BitPayIdActions.updateLoginStatus(null));
+      dispatch(BitPayIdActions.updateEmailPairingStatus(null));
+
+      if (pollId.current) {
+        clearInterval(pollId.current);
+      }
     };
   }, [dispatch]);
 
+  // check poll timeout
+  // intentionally not using setTimeout due to device constraints regarding long timers
   useEffect(() => {
-    switch (twoFactorPairingStatus) {
-      case 'success':
-        const parentNav = navigation.getParent();
+    if (isTimedOut && pollId.current) {
+      clearInterval(pollId.current);
+    }
+  }, [isTimedOut]);
 
-        resetField('code');
+  // check poll result
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (pollId.current) {
+        clearInterval(pollId.current);
+      }
+
+      dispatch(BitPayIdEffects.startEmailPairing(csrfToken));
+    }
+  }, [isAuthenticated, csrfToken, navigation, dispatch]);
+
+  useEffect(() => {
+    switch (emailPairingStatus) {
+      case 'success':
         dispatch(BitPayIdActions.completedPairing());
 
-        if (parentNav?.canGoBack()) {
-          parentNav.goBack();
+        const navParent = navigation.getParent();
+
+        if (navParent?.canGoBack()) {
+          navParent.goBack();
         } else {
-          navigationRef.navigate(RootStacks.BITPAY_ID, {
-            screen: BitpayIdScreens.PROFILE,
+          navigationRef.navigate('BitpayId', {
+            screen: 'Profile',
           });
         }
 
@@ -97,14 +104,13 @@ const TwoFactorPairing: React.FC<TwoFactorPairingScreenProps> = ({
           AppActions.showBottomNotificationModal({
             type: 'error',
             title: t('Login failed'),
-            message:
-              twoFactorPairingError || t('An unexpected error occurred.'),
+            message: t('Something went wrong while authenticating.'),
             enableBackdropDismiss: false,
             actions: [
               {
                 text: t('OK'),
                 action: () => {
-                  dispatch(BitPayIdActions.updateTwoFactorPairStatus(null));
+                  navigation.navigate('Login');
                 },
               },
             ],
@@ -112,57 +118,33 @@ const TwoFactorPairing: React.FC<TwoFactorPairingScreenProps> = ({
         );
         return;
     }
-  }, [
-    dispatch,
-    resetField,
-    navigation,
-    twoFactorPairingStatus,
-    twoFactorPairingError,
-  ]);
-
-  const onSubmit = handleSubmit(({code}) => {
-    if (!code) {
-      return;
-    }
-
-    dispatch(BitPayIdEffects.startTwoFactorPairing(code));
-  });
+  }, [emailPairingStatus, navigation, dispatch]);
 
   return (
     <AuthFormContainer>
-      <AuthFormParagraph>
-        {t(
-          'This additional verification will allow your device to be marked as a verified device. You will be securely connected to your BitPay ID without having to login. Please go to your authenticator app and enter the new verification code generated.',
-        )}
-      </AuthFormParagraph>
+      {isTimedOut && (
+        <>
+          <AuthFormParagraph>
+            {t("Didn't get an email? Try logging in again later.")}
+          </AuthFormParagraph>
+        </>
+      )}
 
-      <AuthRowContainer>
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <BoxInput
-              placeholder={'eg. 123456'}
-              label={t('Code')}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              error={errors.code?.message}
-              value={value}
-              keyboardType="numeric"
-              onSubmitEditing={onSubmit}
-            />
-          )}
-          name="code"
-          defaultValue=""
-        />
-      </AuthRowContainer>
+      {!isTimedOut && (
+        <>
+          <SpinnerWrapper>
+            <Spinner size={78} />
+          </SpinnerWrapper>
 
-      <AuthActionsContainer>
-        <Button onPress={onSubmit} disabled={!isValid}>
-          {t('Submit')}
-        </Button>
-      </AuthActionsContainer>
+          <AuthFormParagraph>
+            {t(
+              'We sent an email containing a link to authenticate this login attempt.',
+            )}
+          </AuthFormParagraph>
+        </>
+      )}
     </AuthFormContainer>
   );
 };
 
-export default TwoFactorPairing;
+export default EmailAuthentication;
