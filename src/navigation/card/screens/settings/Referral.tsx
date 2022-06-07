@@ -123,6 +123,7 @@ const FailedContainer = styled.View<{noHorizontalMargin?: boolean}>`
 `;
 
 const Referral = ({}) => {
+  const {t} = useTranslation();
   const {
     params: {
       card: {id},

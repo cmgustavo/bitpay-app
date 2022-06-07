@@ -851,7 +851,7 @@ const BuyCryptoOffers: React.FC = () => {
                 {!offer.fiatMoney && offer.errorMsg && (
                   <OfferDataContainer>
                     <OfferDataInfoLabel>
-                      {t('Error: {offer.errorMsg}')}
+                      {t(`Error: ${offer.errorMsg}`)}
                     </OfferDataInfoLabel>
                   </OfferDataContainer>
                 )}
@@ -1016,7 +1016,9 @@ const BuyCryptoOffers: React.FC = () => {
                               ),
                             );
                           }}>
-                          <Link style={{fontSize: 12, top: 2}}>Read more</Link>
+                          <Link style={{fontSize: 12, top: 2}}>
+                            {t('Read more')}
+                          </Link>
                         </TouchableOpacity>
                         <ExchangeTermsText style={{marginTop: 4}}>
                           {t(
