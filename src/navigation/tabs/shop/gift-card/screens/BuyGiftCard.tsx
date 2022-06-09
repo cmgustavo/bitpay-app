@@ -151,13 +151,15 @@ const BuyGiftCard = ({
       AppActions.showBottomNotificationModal({
         type: 'info',
         title: t('Activation fee'),
-        message: t(`${
-          cardConfig.displayName
-        } gift cards contain an additional activation fee of ${formatFiatAmount(
-          activationFee,
-          cardConfig.currency,
-          {currencyDisplay: 'symbol'},
-        )}.`),
+        message: t(
+          `${
+            cardConfig.displayName
+          } gift cards contain an additional activation fee of ${formatFiatAmount(
+            activationFee,
+            cardConfig.currency,
+            {currencyDisplay: 'symbol'},
+          )}.`,
+        ),
         enableBackdropDismiss: true,
         actions: [
           {
@@ -205,11 +207,13 @@ const BuyGiftCard = ({
         AppActions.showBottomNotificationModal(
           CustomErrorMessage({
             title: t('Below Minimum Amount'),
-            errMsg: t(`The purchase amount must be at least ${formatFiatAmount(
-              minAmount,
-              cardConfig.currency,
-              {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-            )}. Please modify your amount.`),
+            errMsg: t(
+              `The purchase amount must be at least ${formatFiatAmount(
+                minAmount,
+                cardConfig.currency,
+                {customPrecision: 'minimal', currencyDisplay: 'symbol'},
+              )}. Please modify your amount.`,
+            ),
           }),
         ),
       );
@@ -220,11 +224,13 @@ const BuyGiftCard = ({
         AppActions.showBottomNotificationModal(
           CustomErrorMessage({
             title: t('Purchase Limit Exceeded'),
-            errMsg: t(`The purchase amount is limited to ${formatFiatAmount(
-              maxAmount,
-              cardConfig.currency,
-              {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-            )}. Please modify your amount.`),
+            errMsg: t(
+              `The purchase amount is limited to ${formatFiatAmount(
+                maxAmount,
+                cardConfig.currency,
+                {customPrecision: 'minimal', currencyDisplay: 'symbol'},
+              )}. Please modify your amount.`,
+            ),
           }),
         ),
       );
