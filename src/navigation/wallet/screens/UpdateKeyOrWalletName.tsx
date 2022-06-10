@@ -51,7 +51,9 @@ const UpdateKeyOrWalletName: React.FC<UpdateKeyOrWalletNameScreenProps> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <HeaderTitle>{t('Update Name', {context: titleCasing(context)})}</HeaderTitle>
+        <HeaderTitle>
+          {t('Update Name', {context: titleCasing(context)})}
+        </HeaderTitle>
       ),
     });
   }, [navigation]);
