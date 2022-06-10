@@ -51,7 +51,7 @@ const UpdateKeyOrWalletName: React.FC<UpdateKeyOrWalletNameScreenProps> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <HeaderTitle>{t(`Update ${titleCasing(context)} Name`)}</HeaderTitle>
+        <HeaderTitle>{t('Update Name', {context: titleCasing(context)})}</HeaderTitle>
       ),
     });
   }, [navigation]);
@@ -81,7 +81,7 @@ const UpdateKeyOrWalletName: React.FC<UpdateKeyOrWalletNameScreenProps> = ({
           render={({field: {onChange, onBlur, value}}) => (
             <BoxInput
               placeholder={context === 'key' ? t('My Key') : t('My Wallet')}
-              label={t(`${context.toUpperCase()} NAME`)}
+              label={context.toUpperCase() + t(' NAME')}
               onBlur={onBlur}
               onChangeText={(text: string) => onChange(text)}
               error={errors.name?.message}

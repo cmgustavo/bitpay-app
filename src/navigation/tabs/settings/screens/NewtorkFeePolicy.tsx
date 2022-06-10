@@ -251,8 +251,8 @@ const NetworkFeePolicy = () => {
             hours > 0
               ? hours === 1
                 ? t('within an hour')
-                : t(`within ${hours} hours`)
-              : t(`within ${min} minutes`);
+                : t('within hours', {hours})
+              : t('within minutes', {min});
         }
         feeOptions.push(feeOption);
       });

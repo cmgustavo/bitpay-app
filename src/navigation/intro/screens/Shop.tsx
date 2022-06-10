@@ -63,7 +63,7 @@ const IntroShop: React.VFC<IntroShopScreenProps> = ({navigation}) => {
         <BodyContainer>
           <TextContainer>
             <IntroText>
-              {t(`Shop with crypto and ${'\n'} buy gift cards in the`)}
+              {t('Shop with crypto and \nbuy gift cards in the')}
             </IntroText>
             <IntroTextBold>{t('Shop Tab.')}</IntroTextBold>
           </TextContainer>

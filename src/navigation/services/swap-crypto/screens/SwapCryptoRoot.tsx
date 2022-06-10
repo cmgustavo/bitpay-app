@@ -255,9 +255,8 @@ const SwapCryptoRoot: React.FC = () => {
     changellyGetFixRateForAmount(fromWalletSelected, data)
       .then((data: any) => {
         if (data.error) {
-          const msg = t(
-            `Changelly getFixRateForAmount Error: ${data.error.message}`,
-          );
+          const msg =
+            t('Changelly getFixRateForAmount Error: ') + data.error.message;
           showError(msg);
           return;
         }
@@ -327,12 +326,15 @@ const SwapCryptoRoot: React.FC = () => {
                 primary: true,
               },
             ];
-            msg = t(
-              `${data.error.message}. This is a temporary Changelly decision. If you have further questions please reach out to them.`,
-            );
+            msg =
+              data.error.message +
+              '.' +
+              t(
+                'This is a temporary Changelly decision. If you have further questions please reach out to them.',
+              );
             showError(msg, title, actions);
           } else {
-            msg = t(`Changelly getPairsParams Error: ${data.error.message}`);
+            msg = t('Changelly getPairsParams Error: ') + data.error.message;
             showError(msg);
           }
           return;
@@ -364,7 +366,11 @@ const SwapCryptoRoot: React.FC = () => {
             },
           ];
           const msg = t(
-            `Changelly has temporarily disabled ${fromWalletSelected.currencyAbbreviation}-${toWalletSelected.currencyAbbreviation} pair. If you have further questions please reach out to them.`,
+            'Changelly has temporarily disabled - pair. If you have further questions please reach out to them.',
+            {
+              fromWalletSelected: fromWalletSelected.currencyAbbreviation,
+              toWalletSelected: toWalletSelected.currencyAbbreviation,
+            },
           );
           showError(msg, title, actions);
           return;
@@ -393,9 +399,11 @@ const SwapCryptoRoot: React.FC = () => {
         // onGoingProcessProvider.clear();
 
         if (amountFrom > maxAmount) {
-          const msg = t(
-            `The amount entered is greater than the maximum allowed: ${maxAmount} ${fromWalletData?.currencyAbbreviation}`,
-          );
+          const msg =
+            t('The amount entered is greater than the maximum allowed: ') +
+            maxAmount +
+            ' ' +
+            fromWalletData?.currencyAbbreviation;
           const actions = [
             {
               text: t('OK'),
@@ -451,9 +459,11 @@ const SwapCryptoRoot: React.FC = () => {
           //   });
           //   return;
           // } else {
-          const msg = t(
-            `The amount entered is lower than the minimum allowed: ${minAmount} ${fromWalletData?.currencyAbbreviation}`,
-          );
+          const msg =
+            t('The amount entered is lower than the minimum allowed: ') +
+            minAmount +
+            ' ' +
+            fromWalletData?.currencyAbbreviation;
           const actions = [
             {
               text: t('OK'),
@@ -530,9 +540,14 @@ const SwapCryptoRoot: React.FC = () => {
         type: 'info',
         title: t('Reminder'),
         message: t(
-          `Keep in mind that once the funds are received in your ${toWalletSelected?.currencyAbbreviation.toUpperCase()} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ${
-            linkedWalletName ? `(${linkedWalletName}) ` : ' '
-          }to pay the ETH miner fees.`,
+          'Keep in mind that once the funds are received in your wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.',
+          {
+            selectedWallet:
+              toWalletSelected?.currencyAbbreviation.toUpperCase(),
+            linkedWalletName: linkedWalletName
+              ? '(' + linkedWalletName + ') '
+              : ' ',
+          },
         ),
         enableBackdropDismiss: true,
         actions: [

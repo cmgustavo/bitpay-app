@@ -206,8 +206,8 @@ const AddWallet: React.FC<AddWalletScreenProps> = ({navigation, route}) => {
             {isCustomToken
               ? t('Add Custom Token')
               : isToken
-              ? t(`Add ${currencyAbbreviation} Token`)
-              : t(`Add ${currencyAbbreviation} Wallet`)}
+              ? t('Add Token', {currencyAbbreviation})
+              : t('Add Wallet', {currencyAbbreviation})}
           </HeaderTitle>
         );
       },
@@ -637,11 +637,8 @@ const AddWallet: React.FC<AddWalletScreenProps> = ({navigation, route}) => {
             disabled={!currencyAbbreviation || !currencyName}
             onPress={add}
             buttonStyle={'primary'}>
-            {t(
-              `Add ${
-                isCustomToken ? 'Custom Token' : isToken ? 'Token' : 'Wallet'
-              }`,
-            )}
+            {t('Add ') +
+              (isCustomToken ? 'Custom Token' : isToken ? 'Token' : 'Wallet')}
           </Button>
         </ButtonContainer>
       </ScrollView>

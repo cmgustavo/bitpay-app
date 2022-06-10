@@ -211,7 +211,7 @@ const WalletConnectStart = () => {
         {peerMeta && (
           <View>
             <Paragraph>
-              {t(`${peerMeta?.name} wants to connect to your wallet.`)}
+              {peerMeta?.name + t(' wants to connect to your wallet.')}
             </Paragraph>
             <UriContainer>
               <Paragraph>{peerMeta?.url}</Paragraph>

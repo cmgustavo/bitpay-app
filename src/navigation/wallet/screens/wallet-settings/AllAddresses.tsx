@@ -83,7 +83,8 @@ const AllAddresses = () => {
       const appName = APP_NAME;
 
       let body: string = t(
-        `${appName} Wallet "${walletName}" Addresses\nOnly Main Addresses are shown.\n\n\n'`,
+        ' Wallet "" Addresses\nOnly Main Addresses are shown.\n\n\n\'',
+        {appName, walletName},
       );
 
       body += allAddresses

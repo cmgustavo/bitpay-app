@@ -186,13 +186,14 @@ const ExportWallet = () => {
       let name = walletName || cWalletName || walletId;
 
       if (dontIncludePrivateKey) {
-        name = t(`${name} (No Private Key)`);
+        name = name + t(' (No Private Key)');
       }
 
       // TODO: Update app name
-      const subject = t(`BitPay Wallet Backup: ${name}`);
+      const subject = t('BitPay Wallet Backup: ') + name;
       const body = t(
-        `Here is the encrypted backup of the wallet ${name}: \n\n${_sendWallet} \n\nTo import this backup, copy all text between {...}, including the symbols {}`,
+        'Here is the encrypted backup of the wallet : \n\n \n\nTo import this backup, copy all text between {...}, including the symbols {}',
+        {name, sendWallet: _sendWallet},
       );
 
       // Works only on device

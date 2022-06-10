@@ -61,8 +61,10 @@ export const showCountryCodeRequiredSheet = (
   const {countryCode, name} = phoneCountryCode;
   return AppActions.showBottomNotificationModal({
     type: 'info',
-    title: t(`${countryCode === 'US' ? 'U.S.' : countryCode} phone required`),
-    message: t(`Only a ${name} phone number can be used for this purchase.`),
+    title: t('phone required', {
+      countryCode: countryCode === 'US' ? 'U.S.' : countryCode,
+    }),
+    message: t('Only a phone number can be used for this purchase.', {name}),
     enableBackdropDismiss: true,
     actions: [
       {

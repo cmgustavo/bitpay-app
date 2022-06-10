@@ -271,7 +271,7 @@ const WalletInformation = () => {
               ({xPubKey}: {xPubKey: string}, index: number) => (
                 <View key={index}>
                   <InfoSettingsRow>
-                    <SettingTitle>{t(`Copayer ${index}`)}</SettingTitle>
+                    <SettingTitle>{t('Copayer ') + index}</SettingTitle>
                   </InfoSettingsRow>
 
                   <CopyButton onPress={() => copyText(xPubKey)}>

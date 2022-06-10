@@ -105,7 +105,8 @@ const WalletConnectHome = () => {
         type: 'question',
         title: t('Confirm request'),
         message: t(
-          `Please check on ${session?.peerMeta?.name} that the request is still waiting for confirmation and the swap amount is correct before proceeding to the confirmation step.`,
+          'Please check on that the request is still waiting for confirmation and the swap amount is correct before proceeding to the confirmation step.',
+          {name: session?.peerMeta?.name},
         ),
         enableBackdropDismiss: true,
         actions: [

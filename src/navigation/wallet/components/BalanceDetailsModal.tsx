@@ -126,7 +126,8 @@ const BalanceDetailsModal = ({isVisible, closeModal, wallet}: Props) => {
             <LabelTip type="warn">
               <LabelTipText>
                 {t(
-                  `All of your ${wallet.currencyName} wallet balance may not be available for immediate spending.`,
+                  'All of your wallet balance may not be available for immediate spending.',
+                  {wallet: wallet.currencyName},
                 )}
               </LabelTipText>
             </LabelTip>
@@ -172,9 +173,9 @@ const BalanceDetailsModal = ({isVisible, closeModal, wallet}: Props) => {
             <LabelTip type="info">
               <LabelTipText>
                 <Text>
-                  {t(
-                    `The total amount of ${wallet.currencyName} stored in this wallet.`,
-                  )}
+                  {t('The total amount of stored in this wallet.', {
+                    wallet: wallet.currencyName,
+                  })}
                 </Text>
                 {wallet.currencyAbbreviation.toLowerCase() === 'xrp' ? (
                   <Text>
@@ -199,9 +200,9 @@ const BalanceDetailsModal = ({isVisible, closeModal, wallet}: Props) => {
             </Row>
             <LabelTip type="info">
               <LabelTipText>
-                {t(
-                  `The amount of ${wallet.currencyName} immediately spendable from this wallet.`,
-                )}
+                {t('The amount of immediately spendable from this wallet.', {
+                  wallet: wallet.currencyName,
+                })}
               </LabelTipText>
             </LabelTip>
 
@@ -220,7 +221,8 @@ const BalanceDetailsModal = ({isVisible, closeModal, wallet}: Props) => {
             <LabelTip type="info">
               <LabelTipText>
                 {t(
-                  `The amount of ${wallet.currencyName} stored in this wallet with less than 1 blockchain confirmation.`,
+                  'The amount of stored in this wallet with less than 1 blockchain confirmation.',
+                  {wallet: wallet.currencyName},
                 )}
               </LabelTipText>
             </LabelTip>
@@ -240,7 +242,8 @@ const BalanceDetailsModal = ({isVisible, closeModal, wallet}: Props) => {
             <LabelTip type="info">
               <LabelTipText>
                 {t(
-                  `The amount of ${wallet.currencyName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.`,
+                  'The amount of stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.',
+                  {wallet: wallet.currencyName},
                 )}
               </LabelTipText>
             </LabelTip>

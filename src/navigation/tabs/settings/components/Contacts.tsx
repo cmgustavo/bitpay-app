@@ -66,7 +66,9 @@ const Contacts = () => {
           style={{justifyContent: 'center'}}
           onPress={() => navigation.navigate('Contacts', {screen: 'Root'})}
           activeOpacity={ActiveOpacity}>
-          <SeeAllLink>{t(`View All ${contacts.length} Contacts`)}</SeeAllLink>
+          <SeeAllLink>
+            {t('View All Contacts', {contactsLength: contacts.length})}
+          </SeeAllLink>
         </Setting>
       ) : null}
     </SettingsComponent>

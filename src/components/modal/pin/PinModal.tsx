@@ -72,7 +72,7 @@ const Pin = gestureHandlerRootHOC(() => {
   const {type, context} = useAppSelector(({APP}) => APP.pinModalConfig) || {};
   const [pin, setPin] = useState<Array<string | undefined>>([]);
   const [headerMargin, setHeaderMargin] = useState<string | undefined>();
-  const [message, setMessage] = useState(t('Please enter your PIN'));
+  const [message, setMessage] = useState<string>(t('Please enter your PIN'));
   const [shakeDots, setShakeDots] = useState(false);
   const insets = useSafeAreaInsets();
   const [showBackButton, setShowBackButton] = useState<boolean>();
@@ -245,7 +245,7 @@ const Pin = gestureHandlerRootHOC(() => {
         const m = Math.floor(totalSecs / 60);
         const s = totalSecs % 60;
         setMessage(
-          t(`Try again in ${('0' + m).slice(-2)}:${('0' + s).slice(-2)}`),
+          t('Try again in ') + ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2),
         );
       }, 1000);
     },

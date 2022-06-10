@@ -198,13 +198,10 @@ const RequestSpecificAmountQR = () => {
         <H5>{t('Payment Request')}</H5>
         <ParagraphContainer>
           <Paragraph>
-            {t(
-              `Share this QR code to receive ${
-                formattedAmountObj?.amountUnitStr
-              } in your wallet ${
-                wallet.walletName || wallet.credentials.walletName
-              }.`,
-            )}
+            {t('Share this QR code to receive in your wallet .', {
+              amountUnitStr: formattedAmountObj?.amountUnitStr,
+              walletName: wallet.walletName || wallet.credentials.walletName,
+            })}
           </Paragraph>
         </ParagraphContainer>
 
@@ -222,7 +219,7 @@ const RequestSpecificAmountQR = () => {
           {qrValue ? (
             <>
               <QRHeader>
-                {t(`Receive ${formattedAmountObj?.amountUnitStr}`)}
+                {t('Receive ') + formattedAmountObj?.amountUnitStr}
               </QRHeader>
               <CopyToClipboard onPress={copyToClipboard} activeOpacity={0.7}>
                 <CopyImgContainer>

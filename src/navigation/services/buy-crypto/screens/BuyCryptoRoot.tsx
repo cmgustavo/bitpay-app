@@ -256,9 +256,13 @@ const BuyCryptoRoot: React.FC<
         type: 'info',
         title: t('Reminder'),
         message: t(
-          `Keep in mind that once the funds are received in your ${selectedWallet?.currencyAbbreviation.toUpperCase()} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ${
-            linkedWalletName ? `(${linkedWalletName}) ` : ' '
-          }to pay the ETH miner fees.`,
+          'Keep in mind that once the funds are received in your wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.',
+          {
+            selectedWallet: selectedWallet?.currencyAbbreviation.toUpperCase(),
+            linkedWalletName: linkedWalletName
+              ? '(' + linkedWalletName + ') '
+              : ' ',
+          },
         ),
         enableBackdropDismiss: true,
         actions: [
@@ -393,15 +397,17 @@ const BuyCryptoRoot: React.FC<
       case 'noWalletsAbleToBuy':
         title = t('No wallets');
         message = coin
-          ? t(`No ${coin.toUpperCase()} wallets available to receive funds.`)
+          ? t('No wallets available to receive funds.', {
+              coin: coin.toUpperCase(),
+            })
           : t('No wallets available to receive funds.');
         break;
       case 'keysNoSupportedWallet':
         title = t('Not supported wallets');
         message = coin
-          ? t(
-              `Your keys do not have ${coin.toUpperCase()} wallets able to buy crypto`,
-            )
+          ? t('Your keys do not have wallets able to buy crypto', {
+              coin: coin.toUpperCase(),
+            })
           : t('Your keys do not have supported wallets able to buy crypto');
         break;
       case 'emptyKeyList':
@@ -600,7 +606,7 @@ const BuyCryptoRoot: React.FC<
             onPress={() => {
               checkIfErc20Token();
             }}>
-            t{'View Offers'}
+            {t('View Offers')}
           </Button>
         </CtaContainer>
       </ScrollView>

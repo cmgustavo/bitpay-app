@@ -48,7 +48,8 @@ const SendFeedback = () => {
   const share = async () => {
     try {
       let message = t(
-        `Spend and control your cryptocurrency by downloading the ${APP_NAME} app.`,
+        'Spend and control your cryptocurrency by downloading the app.',
+        {APP_NAME},
       );
 
       if (Platform.OS !== 'ios') {

@@ -201,7 +201,8 @@ const GiftCardDetails = ({
       message:
         cardConfig.redeemInstructions ||
         t(
-          `Paste this code on ${cardConfig.website}. This gift card cannot be recovered if your claim code is lost.`,
+          'Paste this code on . This gift card cannot be recovered if your claim code is lost.',
+          {website: cardConfig.website},
         ),
       enableBackdropDismiss: true,
       actions: [

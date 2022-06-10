@@ -147,7 +147,7 @@ export const BchLegacyAddressInfo = (
 ): BottomNotificationConfig => {
   return {
     type: 'warning',
-    title: t(`${appName} BCH wallets use the CashAddr format by default`),
+    title: t(' BCH wallets use the CashAddr format by default', {appName}),
     message: t(
       'If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can "translate" them to the corresponding address in CashAddr format.',
     ),

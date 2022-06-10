@@ -141,7 +141,8 @@ const WalletConnectRequestDetails = () => {
         setIsMethodSupported(false);
         setMethodNotSupportedMsg(
           t(
-            `${peerName} wants to change network to a different one than the selected wallet. Please, try connecting to a different DeFi or DApp.`,
+            'wants to change network to a different one than the selected wallet. Please, try connecting to a different DeFi or DApp.',
+            {peerName},
           ),
         );
         break;

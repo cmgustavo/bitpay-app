@@ -135,7 +135,7 @@ const BuyGiftCard = ({
       headerTitle: () => {
         return (
           <HeaderTitle>
-            {t(`Buy ${cardConfig.displayName} Gift Card`)}
+            {t('Buy  Gift Card', {displayName: cardConfig.displayName})}
           </HeaderTitle>
         );
       },
@@ -151,15 +151,12 @@ const BuyGiftCard = ({
       AppActions.showBottomNotificationModal({
         type: 'info',
         title: t('Activation fee'),
-        message: t(
-          `${
-            cardConfig.displayName
-          } gift cards contain an additional activation fee of ${formatFiatAmount(
-            activationFee,
-            cardConfig.currency,
-            {currencyDisplay: 'symbol'},
-          )}.`,
-        ),
+        message: t('gift cards contain an additional activation fee of .', {
+          displayName: cardConfig.displayName,
+          fiatAmount: formatFiatAmount(activationFee, cardConfig.currency, {
+            currencyDisplay: 'symbol',
+          }),
+        }),
         enableBackdropDismiss: true,
         actions: [
           {
@@ -208,11 +205,13 @@ const BuyGiftCard = ({
           CustomErrorMessage({
             title: t('Below Minimum Amount'),
             errMsg: t(
-              `The purchase amount must be at least ${formatFiatAmount(
-                minAmount,
-                cardConfig.currency,
-                {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-              )}. Please modify your amount.`,
+              'The purchase amount must be at least,. Please modify your amount.',
+              {
+                fiatAmount: formatFiatAmount(minAmount, cardConfig.currency, {
+                  customPrecision: 'minimal',
+                  currencyDisplay: 'symbol',
+                }),
+              },
             ),
           }),
         ),
@@ -225,11 +224,13 @@ const BuyGiftCard = ({
           CustomErrorMessage({
             title: t('Purchase Limit Exceeded'),
             errMsg: t(
-              `The purchase amount is limited to ${formatFiatAmount(
-                maxAmount,
-                cardConfig.currency,
-                {customPrecision: 'minimal', currencyDisplay: 'symbol'},
-              )}. Please modify your amount.`,
+              'The purchase amount is limited to . Please modify your amount.',
+              {
+                fiatAmount: formatFiatAmount(maxAmount, cardConfig.currency, {
+                  customPrecision: 'minimal',
+                  currencyDisplay: 'symbol',
+                }),
+              },
             ),
           }),
         ),

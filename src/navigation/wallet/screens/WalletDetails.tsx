@@ -561,7 +561,8 @@ const WalletDetails: React.FC<WalletDetailsScreenProps> = ({route}) => {
             type: 'warning',
             title: t('Miner fee notice'),
             message: t(
-              `Because you are speeding up this transaction, the Bitcoin miner fee (${tx.speedupFee} ${currencyAbbreviation}) will be deducted from the total.`,
+              'Because you are speeding up this transaction, the Bitcoin miner fee () will be deducted from the total.',
+              {speedupFee: tx.speedupFee, currencyAbbreviation},
             ),
             enableBackdropDismiss: true,
             actions: [

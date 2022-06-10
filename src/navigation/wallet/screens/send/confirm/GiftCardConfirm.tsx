@@ -75,7 +75,7 @@ const GiftCardHeader = ({
   return (
     <>
       <Header hr>
-        <>{t(`${cardConfig.displayName} Gift Card`)}</>
+        <>{t(' Gift Card', {displayName: cardConfig.displayName})}</>
       </Header>
       <DetailContainer height={73}>
         <DetailRow>

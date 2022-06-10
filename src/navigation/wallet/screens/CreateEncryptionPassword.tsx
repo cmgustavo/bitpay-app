@@ -126,7 +126,7 @@ const CreateEncryptionPassword = () => {
       if (!e) {
         return;
       }
-      setGenericError(t(`Could not encrypt/decrypt group wallets: ${e}`));
+      setGenericError(t('Could not encrypt/decrypt group wallets: ') + e);
     }
   };
 

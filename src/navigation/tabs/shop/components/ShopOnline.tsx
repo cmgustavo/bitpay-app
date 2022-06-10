@@ -170,9 +170,7 @@ export const ShopOnline = ({
       </HideableView>
       <HideableView show={!!(searchVal && searchResults.length)}>
         <SectionContainer>
-          <SectionHeader>
-            {t(`Search Results for "${searchVal}"`)}
-          </SectionHeader>
+          <SectionHeader>{t('Search Results for ') + searchVal}</SectionHeader>
         </SectionContainer>
         <SearchResults>
           {searchResults.map(integration => {

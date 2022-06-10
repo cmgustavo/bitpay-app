@@ -186,9 +186,10 @@ export const Fee = ({
                 {feeLevel && !hideFeeOptions ? <H5>{viewFee}</H5> : null}
                 <H6>{cryptoAmount}</H6>
                 <H7>
-                  {t(
-                    `${fiatAmount} (${percentageOfTotalAmount} of total amount)`,
-                  )}
+                  {t(' ( of total amount)', {
+                    fiatAmount,
+                    percentageOfTotalAmount,
+                  })}
                 </H7>
               </DetailColumn>
               {onPress ? (
@@ -329,6 +330,7 @@ export const WalletSelector = ({
   isVisible: boolean;
   setWalletSelectorVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const [selectorVisible, setSelectorVisible] = useState(false);

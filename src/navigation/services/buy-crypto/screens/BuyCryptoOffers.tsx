@@ -299,7 +299,12 @@ const BuyCryptoOffers: React.FC = () => {
       amount > offers.simplex.amountLimits.max
     ) {
       offers.simplex.outOfLimitMsg = t(
-        `There are no Simplex offers available, as the current purchase limits for this exchange must be between ${offers.simplex.amountLimits.min} ${fiatCurrency} and ${offers.simplex.amountLimits.max} ${fiatCurrency}`,
+        'There are no Simplex offers available, as the current purchase limits for this exchange must be between and',
+        {
+          min: offers.simplex.amountLimits.min,
+          max: offers.simplex.amountLimits.max,
+          fiatCurrency,
+        },
       );
       setFinishedSimplex(!finishedSimplex);
       return;
@@ -403,7 +408,7 @@ const BuyCryptoOffers: React.FC = () => {
         if (err.errorCode) {
           switch (err.errorCode) {
             case 'validation.unsupportedCountry':
-              msg = t(`Country not supported: ${country}`);
+              msg = t('Country not supported: ') + country;
               break;
             default:
               msg = err.message;
@@ -432,7 +437,12 @@ const BuyCryptoOffers: React.FC = () => {
       amount > offers.wyre.amountLimits.max
     ) {
       offers.wyre.outOfLimitMsg = t(
-        `There are no Wyre offers available, as the current purchase limits for this exchange must be between ${offers.wyre.amountLimits.min} ${fiatCurrency} and ${offers.wyre.amountLimits.max} ${fiatCurrency}`,
+        'There are no Wyre offers available, as the current purchase limits for this exchange must be between and',
+        {
+          min: offers.wyre.amountLimits.min,
+          max: offers.wyre.amountLimits.max,
+          fiatCurrency,
+        },
       );
     } else {
       let address: string = '';
@@ -481,9 +491,9 @@ const BuyCryptoOffers: React.FC = () => {
           offers.wyre.fee = data.sourceAmount - data.sourceAmountWithoutFees;
 
           if (offers.wyre.fee < 0) {
-            const err = t(
-              `Wyre has returned a wrong value for the fee. Fee: ${offers.wyre.fee}`,
-            );
+            const err =
+              t('Wyre has returned a wrong value for the fee. Fee: ') +
+              offers.wyre.fee;
             showWyreError(err);
             return;
           }
@@ -851,7 +861,7 @@ const BuyCryptoOffers: React.FC = () => {
                 {!offer.fiatMoney && offer.errorMsg && (
                   <OfferDataContainer>
                     <OfferDataInfoLabel>
-                      {t(`Error: ${offer.errorMsg}`)}
+                      {t('Error: ') + offer.errorMsg}
                     </OfferDataInfoLabel>
                   </OfferDataContainer>
                 )}
@@ -1002,9 +1012,9 @@ const BuyCryptoOffers: React.FC = () => {
                         )}
                         {fiatCurrency.toUpperCase() != 'USD' && (
                           <ExchangeTermsText>
-                            {t(
-                              `Or its equivalent in ${fiatCurrency.toUpperCase()}.`,
-                            )}
+                            {t('Or its equivalent in .', {
+                              fiatCurrency: fiatCurrency.toUpperCase(),
+                            })}
                           </ExchangeTermsText>
                         )}
                         <TouchableOpacity

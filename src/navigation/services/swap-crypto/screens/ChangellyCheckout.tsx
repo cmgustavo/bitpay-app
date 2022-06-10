@@ -364,9 +364,8 @@ const ChangellyCheckout: React.FC = () => {
     changellyGetFixRateForAmount(fromWalletSelected, fixRateForAmountData)
       .then(data => {
         if (data.error) {
-          const msg = t(
-            `Changelly getFixRateForAmount Error: ${data.error.message}`,
-          );
+          const msg =
+            t('Changelly getFixRateForAmount Error: ') + data.error.message;
           showError(msg);
           return;
         }

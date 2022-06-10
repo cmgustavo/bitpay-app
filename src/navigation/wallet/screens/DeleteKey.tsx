@@ -77,7 +77,7 @@ const DeleteKey = () => {
         <Title>{t('Warning!')}</Title>
         <DeleteKeyParagraph>
           {t(
-            `Permanently deletes all wallets using this key. ${'\n'}THIS ACTION CANNOT BE REVERSED.`,
+            'Permanently deletes all wallets using this key. \nTHIS ACTION CANNOT BE REVERSED.',
           )}
         </DeleteKeyParagraph>
 

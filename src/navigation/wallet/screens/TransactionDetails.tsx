@@ -413,9 +413,9 @@ const TransactionDetails = () => {
             <Banner
               type={'error'}
               title={t('Waning!')}
-              description={t(
-                `Error encountered during contract execution (${txs.error})`,
-              )}
+              description={t('Error encountered during contract execution ()', {
+                error: txs.error,
+              })}
             />
           ) : null}
 
@@ -547,7 +547,7 @@ const TransactionDetails = () => {
                   </TouchableOpacity>
                 ) : null}
                 {txs.feeRate ? (
-                  <SubTitle>{t(`Fee rate: ${txs.feeRate}`)}</SubTitle>
+                  <SubTitle>{t('Fee rate: ') + txs.feeRate}</SubTitle>
                 ) : null}
                 {!!txs.confirmations && !txs.safeConfirmed ? (
                   <H7>{txs.conformations}</H7>

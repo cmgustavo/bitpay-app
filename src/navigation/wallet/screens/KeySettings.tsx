@@ -217,7 +217,7 @@ const KeySettings = () => {
           message =
             syncWalletsLength === 1
               ? t('New wallet found')
-              : t(`${syncWalletsLength} wallets found`);
+              : syncWalletsLength + t(' wallets found');
           dispatch(syncWallets({keyId: _key.id, wallets: _syncWallets}));
         } else {
           message = t('Your key is already synced');

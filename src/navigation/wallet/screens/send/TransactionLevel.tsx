@@ -283,8 +283,8 @@ const TransactionLevel = ({
           hours > 0
             ? hours === 1
               ? t('within an hour')
-              : t(`within ${hours} hours`)
-            : t(`within ${min} minutes`);
+              : t('within hours', {hours})
+            : t('within minutes', {min});
       }
 
       if (level === feeLevel) {
@@ -609,23 +609,29 @@ const TransactionLevel = ({
                     ) : null}
                     {error === 'showMaxWarning' ? (
                       <ErrorText>
-                        {t(
-                          `Fee should not be higher than ${maxFeeRecommended}${' '} ${feeUnit}.`,
-                        )}
+                        {t('Fee should not be higher than ') +
+                          maxFeeRecommended +
+                          ' ' +
+                          feeUnit +
+                          '.'}
                       </ErrorText>
                     ) : null}
                     {error === 'showMinError' ? (
                       <ErrorText>
-                        {t(
-                          `Fee should be higher than ${minFeeAllowed} ${feeUnit}.`,
-                        )}
+                        {t('Fee should be higher than ') +
+                          minFeeAllowed +
+                          ' ' +
+                          feeUnit +
+                          '.'}
                       </ErrorText>
                     ) : null}
                     {error === 'showMaxError' ? (
                       <ErrorText>
-                        {t(
-                          `Fee Should be lesser than ${maxFeeAllowed} ${feeUnit}.`,
-                        )}
+                        {t('Fee Should be lesser than ') +
+                          maxFeeAllowed +
+                          ' ' +
+                          feeUnit +
+                          '.'}
                       </ErrorText>
                     ) : null}
                   </ActionContainer>

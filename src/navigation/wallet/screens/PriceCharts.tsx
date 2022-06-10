@@ -412,7 +412,7 @@ const PriceCharts = () => {
           </RangeDateSelectorContainer>
         ) : null}
         <Button onPress={goToBuyCrypto} buttonStyle={'primary'}>
-          {t(`Buy ${currencyName}`)}
+          {t('Buy ') + currencyName}
         </Button>
       </CtaContainer>
     </SafeAreaView>

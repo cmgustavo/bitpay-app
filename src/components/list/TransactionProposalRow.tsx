@@ -64,7 +64,7 @@ const TransactionProposalRow = ({
         <Description numberOfLines={1} ellipsizeMode={'tail'}>
           {t('Sending')}
         </Description>
-        {creator && <Creator>{t(`Created by ${creator}`)}</Creator>}
+        {creator && <Creator>{t('Created by ', {creator})}</Creator>}
       </HeadContainer>
 
       <TailContainer>
