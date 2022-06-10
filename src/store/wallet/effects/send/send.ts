@@ -44,7 +44,6 @@ import {CommonActions} from '@react-navigation/native';
 import {BwcProvider} from '../../../../lib/bwc';
 import {ToCashAddress} from '../address/address';
 import {WalletRowProps} from '../../../../components/list/WalletRow';
-import {useTranslation} from 'react-i18next';
 
 export const createProposalAndBuildTxDetails =
   (
@@ -56,7 +55,6 @@ export const createProposalAndBuildTxDetails =
     }>
   > =>
   async (dispatch, getState) => {
-    const {t} = useTranslation();
     return new Promise(async (resolve, reject) => {
       try {
         // base tx
@@ -87,9 +85,7 @@ export const createProposalAndBuildTxDetails =
         ) {
           return reject({
             err: new Error(
-              t(
-                'There is a pending transaction with a lower account nonce. Wait for your pending transactions to confirm or enable "ETH Queued transactions" in Advanced Settings.',
-              ),
+              'There is a pending transaction with a lower account nonce. Wait for your pending transactions to confirm or enable "ETH Queued transactions" in Advanced Settings.',
             ),
           });
         }
@@ -100,9 +96,7 @@ export const createProposalAndBuildTxDetails =
         ) {
           return reject({
             err: new Error(
-              t(
-                'Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again.',
-              ),
+              'Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again.',
             ),
           });
         }
@@ -714,7 +708,6 @@ export const removeTxp = (wallet: Wallet, txp: TransactionProposal) => {
 export const handleCreateTxProposalError =
   (proposalErrorProps: ProposalErrorHandlerProps): Effect<Promise<any>> =>
   async dispatch => {
-    const {t} = useTranslation();
     try {
       const {err} = proposalErrorProps;
 
@@ -742,21 +735,20 @@ export const handleCreateTxProposalError =
                 feeRatePerKb
           ) {
             return CustomErrorMessage({
-              title: t('Insufficient confirmed funds'),
-              errMsg: t(
+              title: 'Insufficient confirmed funds',
+              errMsg:
                 'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.',
-              ),
             });
           } else {
             return CustomErrorMessage({
-              title: t('Insufficient funds'),
+              title: 'Insufficient funds',
               errMsg: BWCErrorMessage(err),
             });
           }
 
         default:
           return CustomErrorMessage({
-            title: t('Error'),
+            title: 'Error',
             errMsg: BWCErrorMessage(err),
           });
       }
@@ -961,18 +953,16 @@ export const getTx = (wallet: Wallet, txpid: string): Promise<any> => {
 export const showNoWalletsModal =
   ({navigation}: {navigation: any}): Effect<void> =>
   async dispatch => {
-    const {t} = useTranslation();
     dispatch(
       showBottomNotificationModal({
         type: 'info',
-        title: t('No compatible wallets'),
-        message: t(
+        title: 'No compatible wallets',
+        message:
           "You currently don't have any wallets capable of sending this payment. Would you like to import one?",
-        ),
         enableBackdropDismiss: false,
         actions: [
           {
-            text: t('Import Wallet'),
+            text: 'Import Wallet',
             action: () => {
               dispatch(dismissBottomNotificationModal());
               navigation.dispatch(
@@ -996,7 +986,7 @@ export const showNoWalletsModal =
             primary: true,
           },
           {
-            text: t('Maybe Later'),
+            text: 'Maybe Later',
             action: () => {
               dispatch(dismissBottomNotificationModal());
               while (navigation.canGoBack()) {
