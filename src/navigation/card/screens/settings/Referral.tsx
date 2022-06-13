@@ -171,9 +171,9 @@ const Referral = ({}) => {
     try {
       const message =
         t(
-          "Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ",
-        ) +
-        `${code}. ${BASE_BITPAY_URLS[network]}/card?code=${code}&ref=${givenName}`;
+          "Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code .",
+          {code},
+        ) + `${BASE_BITPAY_URLS[network]}/card?code=${code}&ref=${givenName}`;
 
       await Share.share({
         message,

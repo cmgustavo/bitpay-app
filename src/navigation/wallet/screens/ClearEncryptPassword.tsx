@@ -63,8 +63,8 @@ const ClearEncryptPassword = () => {
         </ClearEncryptPasswordParagraph>
         <ClearEncryptPasswordParagraph>
           {t(
-            `If you do not have the recovery phrase, you will not be able to regain access to your wallet${' '}`,
-          )}
+            'If you do not have the recovery phrase, you will not be able to regain access to your wallet',
+          )}{' '}
           <Pressable
             style={{maxHeight: 22, alignSelf: 'flex-start'}}
             onPress={() =>

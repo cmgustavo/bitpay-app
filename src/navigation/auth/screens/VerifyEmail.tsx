@@ -104,7 +104,9 @@ const VerifyEmailScreen: React.FC<VerifyEmailScreenProps> = ({navigation}) => {
 
           <VerifyEmailParagraph>
             {t("Email didn't arrive?")}{' '}
-            <Link onPress={() => resendVerificationEmail()}>Resend link</Link>
+            <Link onPress={() => resendVerificationEmail()}>
+              {t('Resend link')}
+            </Link>
           </VerifyEmailParagraph>
         </>
       )}

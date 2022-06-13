@@ -147,7 +147,7 @@ const Confirm = () => {
     navigation.setOptions({
       headerTitle: () => (
         <HeaderTitle>
-          {t(`Confirm ${speedup ? 'Speed Up' : 'Payment'}`)}
+          {t('Confirm ', {title: speedup ? t('Speed Up') : t('Payment')})}
         </HeaderTitle>
       ),
     });

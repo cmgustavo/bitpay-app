@@ -197,7 +197,7 @@ const GiftCardDetails = ({
   ) =>
     AppActions.showBottomNotificationModal({
       type: 'success',
-      title: t(`Copied: ${copiedValue}`),
+      title: t('Copied: ', {copiedValue}),
       message:
         cardConfig.redeemInstructions ||
         t(

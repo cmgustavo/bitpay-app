@@ -92,7 +92,7 @@ const LanguageToggle = () => {
 
   return (
     <Container>
-      <Text>{t('Español')}</Text>
+      <Text>{t('Spanish')}</Text>
       <Switch value={language === 'es'} onChange={() => toggleLanguage()} />
     </Container>
   );

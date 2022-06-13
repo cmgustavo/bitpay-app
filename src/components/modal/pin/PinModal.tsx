@@ -245,7 +245,9 @@ const Pin = gestureHandlerRootHOC(() => {
         const m = Math.floor(totalSecs / 60);
         const s = totalSecs % 60;
         setMessage(
-          t('Try again in ') + ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2),
+          t('Try again in ', {
+            time: ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2),
+          }),
         );
       }, 1000);
     },

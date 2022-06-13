@@ -53,7 +53,7 @@ import {
 import {startGetRates} from '../../../../../store/wallet/effects';
 import {coinbasePayInvoice} from '../../../../../store/coinbase';
 import {useTranslation} from 'react-i18next';
-import {t} from 'i18next';
+
 export interface GiftCardConfirmParamList {
   amount: number;
   cardConfig: CardConfig;
@@ -89,6 +89,7 @@ const GiftCardHeader = ({
 };
 
 const Confirm = () => {
+  const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const route = useRoute<RouteProp<WalletStackParamList, 'GiftCardConfirm'>>();
