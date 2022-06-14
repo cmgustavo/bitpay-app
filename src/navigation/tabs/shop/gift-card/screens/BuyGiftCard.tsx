@@ -205,7 +205,7 @@ const BuyGiftCard = ({
           CustomErrorMessage({
             title: t('Below Minimum Amount'),
             errMsg: t(
-              'The purchase amount must be at least,. Please modify your amount.',
+              'The purchase amount must be at least . Please modify your amount.',
               {
                 fiatAmount: formatFiatAmount(minAmount, cardConfig.currency, {
                   customPrecision: 'minimal',
