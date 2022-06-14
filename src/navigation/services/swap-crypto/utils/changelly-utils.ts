@@ -188,7 +188,7 @@ export const changellyGetStatusDetails = (status: string): Status => {
     case 'expired':
       statusTitle = t('Expired');
       statusDescription = t(
-        'Payin was not sent within the indicated timeframe.',
+        'Paying was not sent within the indicated time frame.',
       );
       break;
     default:

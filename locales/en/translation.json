@@ -385,7 +385,7 @@
   "Hold": "Hold",
   "Due to AML/KYC procedure, exchange may be delayed.": "Due to AML/KYC procedure, exchange may be delayed.",
   "Expired": "Expired",
-  "Payin was not sent within the indicated timeframe.": "Payin was not sent within the indicated timeframe.",
+  "Paying was not sent within the indicated time frame.": "Paying was not sent within the indicated time frame.",
   "New Contact": "New Contact",
   "Coin or Network invalid": "Coin or Network invalid",
   "Tag number is required for XRP address": "Tag number is required for XRP address",
