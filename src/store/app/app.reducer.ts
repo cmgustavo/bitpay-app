@@ -84,6 +84,7 @@ export interface AppState {
   keyMigrationFailureModalHasBeenShown: boolean;
   activeModalId: ModalId | null;
   failedAppInit: boolean;
+  checkingBiometricForSending: boolean;
 }
 
 const initialState: AppState = {
@@ -142,6 +143,7 @@ const initialState: AppState = {
   keyMigrationFailureModalHasBeenShown: false,
   activeModalId: null,
   failedAppInit: false,
+  checkingBiometricForSending: false,
 };
 
 export const appReducer = (
@@ -475,6 +477,12 @@ export const appReducer = (
       return {
         ...state,
         failedAppInit: action.payload,
+      };
+
+    case AppActionTypes.CHECKING_BIOMETRIC_FOR_SENDING:
+      return {
+        ...state,
+        checkingBiometricForSending: action.payload,
       };
 
     default:
