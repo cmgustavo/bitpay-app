@@ -7,19 +7,12 @@ import {each} from 'lodash';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {RefreshControl, ScrollView} from 'react-native';
-import {STATIC_CONTENT_CARDS_ENABLED} from '../../../constants/config';
 import {SupportedCoinsOptions} from '../../../constants/SupportedCurrencyOptions';
 import {
   setShowKeyMigrationFailureModal,
   showBottomNotificationModal,
 } from '../../../store/app/app.actions';
 import {requestBrazeContentRefresh} from '../../../store/app/app.effects';
-import {
-  selectBrazeDoMore,
-  selectBrazeQuickLinks,
-  selectBrazeShopWithCrypto,
-} from '../../../store/app/app.selectors';
-import {selectCardGroups} from '../../../store/card/card.selectors';
 import {getPriceHistory, startGetRates} from '../../../store/wallet/effects';
 import {startUpdateAllKeyAndWalletStatus} from '../../../store/wallet/effects/status/status';
 import {updatePortfolioBalance} from '../../../store/wallet/wallet.actions';
@@ -28,11 +21,8 @@ import {sleep} from '../../../utils/helper-methods';
 import {
   useAppDispatch,
   useAppSelector,
-  useBrazeRefreshOnFocus,
 } from '../../../utils/hooks';
 import {BalanceUpdateError} from '../../wallet/components/ErrorMessages';
-import AdvertisementsList from './components/advertisements/AdvertisementsList';
-import DefaultAdvertisements from './components/advertisements/DefaultAdvertisements';
 import Crypto from './components/Crypto';
 import ExchangeRatesList, {
   ExchangeRateItemProps,
@@ -41,32 +31,22 @@ import ProfileButton from './components/HeaderProfileButton';
 import ScanButton from './components/HeaderScanButton';
 import HomeSection from './components/HomeSection';
 import LinkingButtons from './components/LinkingButtons';
-import MockOffers from './components/offers/MockOffers';
-import OffersCarousel from './components/offers/OffersCarousel';
 import PortfolioBalance from './components/PortfolioBalance';
-import DefaultQuickLinks from './components/quick-links/DefaultQuickLinks';
-import QuickLinksCarousel from './components/quick-links/QuickLinksCarousel';
 import {HeaderContainer, HomeContainer} from './components/Styled';
 import KeyMigrationFailureModal from './components/KeyMigrationFailureModal';
-import {useThemeType} from '../../../utils/hooks/useThemeType';
 import {ProposalBadgeContainer} from '../../../components/styled/Containers';
 import {ProposalBadge} from '../../../components/styled/Text';
 import {
   receiveCrypto,
   sendCrypto,
 } from '../../../store/wallet/effects/send/send';
-import {Analytics} from '../../../store/analytics/analytics.effects';
 
 const HomeRoot = () => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const theme = useTheme();
-  const themeType = useThemeType();
   const [refreshing, setRefreshing] = useState(false);
-  const brazeShopWithCrypto = useAppSelector(selectBrazeShopWithCrypto);
-  const brazeDoMore = useAppSelector(selectBrazeDoMore);
-  const brazeQuickLinks = useAppSelector(selectBrazeQuickLinks);
   const keys = useAppSelector(({WALLET}) => WALLET.keys);
   const wallets = Object.values(keys).flatMap(k => k.wallets);
   let pendingTxps: any = [];
@@ -78,35 +58,11 @@ const HomeRoot = () => {
   const {
     appIsLoading,
     defaultAltCurrency,
-    defaultLanguage,
     keyMigrationFailure,
     keyMigrationFailureModalHasBeenShown,
     showPortfolioValue,
   } = useAppSelector(({APP}) => APP);
   const hasKeys = Object.values(keys).length;
-  const cardGroups = useAppSelector(selectCardGroups);
-  const hasCards = cardGroups.length > 0;
-  useBrazeRefreshOnFocus();
-
-  // Shop with Crypto
-  const memoizedShopWithCryptoCards = useMemo(() => {
-    if (STATIC_CONTENT_CARDS_ENABLED && !brazeShopWithCrypto.length) {
-      return MockOffers();
-    }
-
-    return brazeShopWithCrypto;
-  }, [brazeShopWithCrypto, defaultLanguage]);
-
-  // Do More
-  const memoizedDoMoreCards = useMemo(() => {
-    if (STATIC_CONTENT_CARDS_ENABLED && !brazeDoMore.length) {
-      return DefaultAdvertisements(themeType).filter(advertisement => {
-        return hasCards ? advertisement.id !== 'card' : true;
-      });
-    }
-
-    return brazeDoMore;
-  }, [brazeDoMore, hasCards, themeType, defaultLanguage]);
 
   // Exchange Rates
   const priceHistory = useAppSelector(({RATE}) => RATE.priceHistory);
@@ -136,23 +92,6 @@ const HomeRoot = () => {
       }, [] as ExchangeRateItemProps[]),
     [priceHistory],
   );
-
-  // Quick Links
-  const memoizedQuickLinks = useMemo(() => {
-    if (STATIC_CONTENT_CARDS_ENABLED && !brazeQuickLinks.length) {
-      return DefaultQuickLinks();
-    }
-
-    return brazeQuickLinks;
-  }, [brazeQuickLinks, defaultLanguage]);
-
-  useEffect(() => {
-    return navigation.addListener('focus', () => {
-      if (!appIsLoading) {
-        dispatch(updatePortfolioBalance());
-      } // portfolio balance is updated in app init
-    });
-  }, [dispatch, navigation]);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -208,8 +147,6 @@ const HomeRoot = () => {
                 <ProposalBadge>{pendingTxps.length}</ProposalBadge>
               </ProposalBadgeContainer>
             ) : null}
-            <ScanButton />
-            <ProfileButton />
           </HeaderContainer>
 
           {/* ////////////////////////////// PORTFOLIO BALANCE */}
@@ -238,30 +175,6 @@ const HomeRoot = () => {
             <Crypto />
           </HomeSection>
 
-          {/* ////////////////////////////// SHOP WITH CRYPTO */}
-          {memoizedShopWithCryptoCards.length ? (
-            <HomeSection
-              title={t('Shop with Crypto')}
-              action={t('See all')}
-              onActionPress={() => {
-                navigation.navigate('Tabs', {screen: 'Shop'});
-                dispatch(
-                  Analytics.track('Clicked Shop with Crypto', {
-                    context: 'HomeRoot',
-                  }),
-                );
-              }}>
-              <OffersCarousel contentCards={memoizedShopWithCryptoCards} />
-            </HomeSection>
-          ) : null}
-
-          {/* ////////////////////////////// DO MORE */}
-          {memoizedDoMoreCards.length ? (
-            <HomeSection title={t('Do More')}>
-              <AdvertisementsList contentCards={memoizedDoMoreCards} />
-            </HomeSection>
-          ) : null}
-
           {/* ////////////////////////////// EXCHANGE RATES */}
           {memoizedExchangeRates.length ? (
             <HomeSection title={t('Exchange Rates')} label="1D">
@@ -272,12 +185,6 @@ const HomeRoot = () => {
             </HomeSection>
           ) : null}
 
-          {/* ////////////////////////////// QUICK LINKS - Leave feedback etc */}
-          {memoizedQuickLinks.length ? (
-            <HomeSection title={t('Quick Links')}>
-              <QuickLinksCarousel contentCards={memoizedQuickLinks} />
-            </HomeSection>
-          ) : null}
         </ScrollView>
       )}
       <KeyMigrationFailureModal />

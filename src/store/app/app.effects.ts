@@ -1,30 +1,19 @@
 // import BitAuth from 'bitauth';
 import i18n, {t} from 'i18next';
 import {debounce} from 'lodash';
-import {
-  DeviceEventEmitter,
-  EmitterSubscription,
-  Linking,
-  Platform,
-  Share,
-} from 'react-native';
+import {DeviceEventEmitter, Linking, Platform, Share} from 'react-native';
 // import Braze from 'react-native-appboy-sdk';
-import RNBootSplash from 'react-native-bootsplash';
-import InAppReview from 'react-native-in-app-review';
-import InAppBrowser, {
-  InAppBrowserOptions,
-} from 'react-native-inappbrowser-reborn';
-// import {
-//   checkNotifications,
-//   requestNotifications,
-//   RESULTS,
-// } from 'react-native-permissions';
+/*import {
+  checkNotifications,
+  requestNotifications,
+  RESULTS,
+} from 'react-native-permissions';*/
 import uuid from 'react-native-uuid';
 import {AppActions} from '.';
 import BitPayApi from '../../api/bitpay';
 import GraphQlApi from '../../api/graphql';
-import UserApi from '../../api/user';
-// import {OnGoingProcessMessages} from '../../components/modal/ongoing-process/OngoingProcess';
+//import UserApi from '../../api/user';
+import {OnGoingProcessMessages} from '../../components/modal/ongoing-process/OngoingProcess';
 // import {Network} from '../../constants';
 // import {BuyCryptoScreens} from '../../navigation/services/buy-crypto/BuyCryptoStack';
 // import {CardScreens} from '../../navigation/card/CardStack';
@@ -32,17 +21,17 @@ import UserApi from '../../api/user';
 // import {TabsScreens} from '../../navigation/tabs/TabsStack';
 // import {WalletScreens} from '../../navigation/wallet/WalletStack';
 // import {isAxiosError} from '../../utils/axios';
-// import {sleep} from '../../utils/helper-methods';
+import {sleep} from '../../utils/helper-methods';
 // import {Analytics} from '../analytics/analytics.effects';
 // import {BitPayIdEffects} from '../bitpay-id';
 // import {CardEffects} from '../card';
 // import {Card} from '../card/card.models';
-// import {coinbaseInitialize} from '../coinbase';
-// import {Effect, RootState} from '../index';
+import {coinbaseInitialize} from '../coinbase';
+import {Effect, RootState} from '../index';
 // import {LocationEffects} from '../location';
-// import {LogActions} from '../log';
+import {LogActions} from '../log';
 // import {WalletActions} from '../wallet';
-// import {startMigration, startWalletStoreInit} from '../wallet/effects';
+import {startWalletStoreInit} from '../wallet/effects';
 // import {
 //   setAnnouncementsAccepted,
 //   setAppFirstOpenEventComplete,
@@ -92,7 +81,7 @@ import UserApi from '../../api/user';
 // import moment from 'moment';
 // import {FeedbackRateType} from '../../navigation/tabs/settings/about/screens/SendFeedback';
 // import {walletConnectInit} from '../wallet-connect/wallet-connect.effects';
-import {moralisInit} from '../moralis/moralis.effects';
+//import {moralisInit} from '../moralis/moralis.effects';
 
 // Subscription groups (Braze)
 const PRODUCTS_UPDATES_GROUP_ID = __DEV__
@@ -111,9 +100,9 @@ export const startAppInit = (): Effect => async (dispatch, getState) => {
       ),
     );
 
-    dispatch(deferDeeplinksUntilAppIsReady());
+    //dispatch(deferDeeplinksUntilAppIsReady());
 
-    const {APP, BITPAY_ID, CONTACT, WALLET} = getState();
+    const {APP, WALLET} = getState();
     const {network, pinLockActive, biometricLockActive, colorScheme} = APP;
 
     WALLET.initLogs.forEach(log => dispatch(log));
@@ -121,98 +110,14 @@ export const startAppInit = (): Effect => async (dispatch, getState) => {
     dispatch(LogActions.debug(`Network: ${network}`));
     dispatch(LogActions.debug(`Theme: ${colorScheme || 'system'}`));
 
-    const {appFirstOpenData, onboardingCompleted, migrationComplete} = APP;
-
-    // init analytics -> post onboarding or migration
-    if (onboardingCompleted) {
-      await dispatch(Analytics.initialize());
-    }
-
-    if (!appFirstOpenData?.firstOpenDate) {
-      const firstOpen = Math.floor(Date.now() / 1000);
-
-      dispatch(setAppFirstOpenEventDate(firstOpen));
-      dispatch(trackFirstOpenEvent(firstOpen));
-    } else {
-      dispatch(Analytics.track('Last Opened App'));
-
-      if (!appFirstOpenData?.firstOpenEventComplete) {
-        dispatch(trackFirstOpenEvent(appFirstOpenData.firstOpenDate));
-      }
-    }
-
     dispatch(startWalletStoreInit());
 
-    const {contactMigrationComplete} = CONTACT;
-
-    if (!contactMigrationComplete) {
-      await dispatch(startContactMigration());
-      dispatch(setContactMigrationComplete());
-      dispatch(LogActions.info('success [setContactMigrationComplete]'));
-    }
-
-    if (!migrationComplete) {
-      await dispatch(startMigration());
-      dispatch(setMigrationComplete());
-      dispatch(LogActions.info('success [setMigrationComplete]'));
-    }
-
-    const token = BITPAY_ID.apiToken[network];
-    const isPaired = !!token;
-    const identity = dispatch(initializeAppIdentity());
-
-    dispatch(initializeApi(network, identity));
-
-    dispatch(LocationEffects.getLocationData());
-
-    if (isPaired) {
-      try {
-        dispatch(
-          LogActions.info(
-            'App is paired with BitPayID, refreshing user data...',
-          ),
-        );
-
-        const {errors, data} = await UserApi.fetchInitialUserData(token);
-
-        // handle partial errors
-        if (errors) {
-          const msg = errors
-            .map(e => `${e.path.join('.')}: ${e.message}`)
-            .join(',\n');
-
-          dispatch(
-            LogActions.error(
-              'One or more errors occurred while fetching initial user data:\n' +
-                msg,
-            ),
-          );
-        }
-        dispatch(BitPayIdEffects.startBitPayIdStoreInit(data.user));
-        dispatch(CardEffects.startCardStoreInit(data.user));
-      } catch (err: any) {
-        if (isAxiosError(err)) {
-          dispatch(LogActions.error(`${err.name}: ${err.message}`));
-          dispatch(LogActions.error(err.config.url));
-          dispatch(LogActions.error(JSON.stringify(err.config.data || {})));
-        } else if (err instanceof Error) {
-          dispatch(LogActions.error(`${err.name}: ${err.message}`));
-        } else {
-          dispatch(LogActions.error(JSON.stringify(err)));
-        }
-
-        dispatch(
-          LogActions.info(
-            'Failed to refresh user data. Continuing initialization.',
-          ),
-        );
-      }
-    }
+    //dispatch(LocationEffects.getLocationData());
 
     // splitting inits into store specific ones as to keep it cleaner in the main init here
-    dispatch(walletConnectInit());
-    dispatch(initializeBrazeContent());
-    dispatch(moralisInit());
+    //dispatch(walletConnectInit());
+    //dispatch(initializeBrazeContent());
+    //dispatch(moralisInit());
 
     // temporarily disabled
     // dispatch(walletConnectV2Init());
@@ -220,28 +125,15 @@ export const startAppInit = (): Effect => async (dispatch, getState) => {
     // Update Coinbase
     dispatch(coinbaseInitialize());
 
-    dispatch(showBlur(pinLockActive || biometricLockActive));
+    //dispatch(showBlur(pinLockActive || biometricLockActive));
 
     dispatch(AppActions.successAppInit());
-    DeviceEventEmitter.emit(DeviceEmitterEvents.APP_DATA_INITIALIZED);
+    //DeviceEventEmitter.emit(DeviceEmitterEvents.APP_DATA_INITIALIZED);
 
-    await sleep(500);
+    //await sleep(500);
     dispatch(LogActions.info('Initialized app successfully.'));
     dispatch(LogActions.debug(`Pin Lock Active: ${pinLockActive}`));
     dispatch(LogActions.debug(`Biometric Lock Active: ${biometricLockActive}`));
-    RNBootSplash.hide({fade: true}).then(() => {
-      // avoid splash conflicting with modal in iOS
-      // https://stackoverflow.com/questions/65359539/showing-a-react-native-modal-right-after-app-startup-freezes-the-screen-in-ios
-      if (pinLockActive) {
-        dispatch(AppActions.showPinModal({type: 'check'}));
-      }
-      if (biometricLockActive) {
-        dispatch(AppActions.showBiometricModal({}));
-      }
-
-      dispatch(AppActions.appInitCompleted());
-      DeviceEventEmitter.emit(DeviceEmitterEvents.APP_INIT_COMPLETED);
-    });
   } catch (err: unknown) {
     let errorStr;
     if (err instanceof Error) {
@@ -256,9 +148,6 @@ export const startAppInit = (): Effect => async (dispatch, getState) => {
       dispatch(AppActions.failedAppInit());
     }
     dispatch(LogActions.error('Failed to initialize app: ' + errorStr));
-    await sleep(500);
-    dispatch(showBlur(false));
-    RNBootSplash.hide();
   }
 };
 
@@ -669,125 +558,6 @@ export const unSubscribeEmailNotifications =
               walletClient.credentials.walletName,
           ),
         );
-      }
-    });
-  };
-
-export const checkNotificationsPermissions = async (): Promise<boolean> => {
-  const {status} = await checkNotifications().catch(() => ({status: null}));
-
-  return status === RESULTS.GRANTED;
-};
-
-export const renewSubscription = (): Effect => (dispatch, getState) => {
-  const {
-    WALLET: {keys},
-    APP,
-  } = getState();
-
-  getAllWalletClients(keys).then(walletClients => {
-    walletClients.forEach(walletClient => {
-      dispatch(subscribePushNotifications(walletClient, APP.brazeEid!));
-    });
-  });
-};
-
-export const requestNotificationsPermissions = async (): Promise<boolean> => {
-  const {status} = await requestNotifications([
-    'alert',
-    'badge',
-    'sound',
-  ]).catch(() => ({status: null}));
-
-  return status === RESULTS.GRANTED;
-};
-
-export const setNotifications =
-  (accepted: boolean): Effect =>
-  (dispatch, getState) => {
-    dispatch(setNotificationsAccepted(accepted));
-    const value = accepted
-      ? Braze.NotificationSubscriptionTypes.SUBSCRIBED
-      : Braze.NotificationSubscriptionTypes.UNSUBSCRIBED;
-
-    Braze.setPushNotificationSubscriptionType(value);
-    const {
-      WALLET: {keys},
-      APP,
-    } = getState();
-
-    getAllWalletClients(keys).then(walletClients => {
-      if (accepted) {
-        walletClients.forEach(walletClient => {
-          dispatch(subscribePushNotifications(walletClient, APP.brazeEid!));
-        });
-      } else {
-        walletClients.forEach(walletClient => {
-          dispatch(unSubscribePushNotifications(walletClient, APP.brazeEid!));
-        });
-      }
-      dispatch(LogActions.info('Push Notifications: ' + value));
-    });
-  };
-
-export const setConfirmTxNotifications =
-  (accepted: boolean): Effect =>
-  async dispatch => {
-    dispatch(setConfirmedTxAccepted(accepted));
-  };
-
-export const setAnnouncementsNotifications =
-  (accepted: boolean): Effect =>
-  async dispatch => {
-    dispatch(setAnnouncementsAccepted(accepted));
-    if (accepted) {
-      Braze.addToSubscriptionGroup(OFFERS_AND_PROMOTIONS_GROUP_ID);
-      Braze.addToSubscriptionGroup(PRODUCTS_UPDATES_GROUP_ID);
-    } else {
-      Braze.removeFromSubscriptionGroup(PRODUCTS_UPDATES_GROUP_ID);
-      Braze.removeFromSubscriptionGroup(OFFERS_AND_PROMOTIONS_GROUP_ID);
-    }
-  };
-
-export const setEmailNotifications =
-  (
-    accepted: boolean,
-    email: string | null,
-    agreedToMarketingCommunications?: boolean,
-  ): Effect =>
-  (dispatch, getState) => {
-    const _email = accepted ? email : null;
-    dispatch(setEmailNotificationsAccepted(accepted, _email));
-
-    if (agreedToMarketingCommunications) {
-      Braze.setEmailNotificationSubscriptionType(
-        Braze.NotificationSubscriptionTypes.OPTED_IN,
-      );
-    } else {
-      Braze.setEmailNotificationSubscriptionType(
-        Braze.NotificationSubscriptionTypes.SUBSCRIBED,
-      );
-    }
-
-    const {
-      WALLET: {keys},
-      APP,
-    } = getState();
-
-    getAllWalletClients(keys).then(walletClients => {
-      if (accepted && email) {
-        const prefs = {
-          email,
-          language: APP.defaultLanguage,
-          unit: 'btc', // deprecated
-        };
-        walletClients.forEach(walletClient => {
-          dispatch(subscribeEmailNotifications(walletClient, prefs));
-        });
-      } else {
-        walletClients.forEach(walletClient => {
-          dispatch(unSubscribeEmailNotifications(walletClient));
-        });
       }
     });
   };

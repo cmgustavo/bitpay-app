@@ -34,12 +34,6 @@ import {
 } from './buy-crypto/buy-crypto.reducer';
 import {BuyCryptoActionType} from './buy-crypto/buy-crypto.types';
 import {
-  cardReducer,
-  cardReduxPersistBlacklist,
-  CardState,
-} from './card/card.reducer';
-import {CardActionType} from './card/card.types';
-import {
   locationReducer,
   locationReduxPersistBlackList,
   LocationState,
@@ -112,7 +106,6 @@ const reducerPersistBlackLists = {
   APP: appReduxPersistBlackList,
   BITPAY_ID: bitPayIdReduxPersistBlackList,
   BUY_CRYPTO: buyCryptoReduxPersistBlackList,
-  CARD: cardReduxPersistBlacklist,
   LOCATION: locationReduxPersistBlackList,
   LOG: logReduxPersistBlackList,
   SHOP: shopReduxPersistBlackList,
@@ -156,14 +149,6 @@ const reducers = {
       blacklist: buyCryptoReduxPersistBlackList,
     },
     buyCryptoReducer,
-  ),
-  CARD: persistReducer<CardState, CardActionType>(
-    {
-      ...basePersistConfig,
-      key: 'CARD',
-      blacklist: cardReduxPersistBlacklist,
-    },
-    cardReducer,
   ),
   LOCATION: persistReducer<LocationState, LocationActionType>(
     {

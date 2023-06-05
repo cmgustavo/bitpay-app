@@ -47,7 +47,6 @@ import {COINBASE_ENV} from '../../../../api/coinbase/coinbase.constants';
 import {WrongPasswordError} from '../../../wallet/components/ErrorMessages';
 import {useTranslation} from 'react-i18next';
 import {t} from 'i18next';
-import {Analytics} from '../../../../store/analytics/analytics.effects';
 
 const CryptoContainer = styled.View`
   background: ${({theme}) => (theme.dark ? '#111111' : Feather)};
@@ -318,11 +317,6 @@ const Crypto = () => {
               <Button
                 style={{marginBottom: 15}}
                 onPress={() => {
-                  dispatch(
-                    Analytics.track('Clicked create, import or join', {
-                      context: 'NoKeysCryptoContainer',
-                    }),
-                  );
                   navigation.navigate('Wallet', {screen: 'CreationOptions'});
                 }}>
                 {t('Create, import or join a shared wallet')}
@@ -330,11 +324,6 @@ const Crypto = () => {
               <Button
                 buttonStyle={'secondary'}
                 onPress={() => {
-                  dispatch(
-                    Analytics.track('Clicked Connect Coinbase', {
-                      context: 'NoKeysCryptoContainer',
-                    }),
-                  );
                   navigation.navigate('Coinbase', {screen: 'CoinbaseRoot'});
                 }}>
                 {linkedCoinbase

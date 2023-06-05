@@ -1,6 +1,5 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {
-  ActiveOpacity,
   OptionContainer,
   OptionInfoContainer,
   OptionList,
@@ -12,15 +11,12 @@ import {
   OptionDescription,
   OptionTitle,
 } from '../../../components/styled/Text';
-import haptic from '../../../components/haptic-feedback/haptic';
 import {Key} from '../../../store/wallet/wallet.models';
 import {RouteProp} from '@react-navigation/core';
 import {WalletStackParamList} from '../WalletStack';
 import MultisigOptions from './MultisigOptions';
 import {Option} from './CreationOptions';
 import {useTranslation} from 'react-i18next';
-import {useAppDispatch} from '../../../utils/hooks';
-import {Analytics} from '../../../store/analytics/analytics.effects';
 
 export type AddingOptionsParamList = {
   key: Key;
@@ -29,7 +25,6 @@ export type AddingOptionsParamList = {
 const AddingOptions: React.FC = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
   const route = useRoute<RouteProp<WalletStackParamList, 'AddingOptions'>>();
   const {key} = route.params;
   const [showMultisigOptions, setShowMultisigOptions] = useState(false);
@@ -49,11 +44,6 @@ const AddingOptions: React.FC = () => {
         'Add coins like Bitcoin and Dogecoin, and also tokens like USDC and APE',
       ),
       cta: () => {
-        dispatch(
-          Analytics.track('Clicked Create Basic Wallet', {
-            context: 'AddingOptions',
-          }),
-        );
         navigation.navigate('Wallet', {
           screen: 'CurrencySelection',
           params: {context: 'addWallet', key},
@@ -75,9 +65,7 @@ const AddingOptions: React.FC = () => {
         <OptionListContainer>
           {optionList.map(({cta, id, title, description}: Option) => (
             <OptionList
-              activeOpacity={ActiveOpacity}
               onPress={() => {
-                haptic('impactLight');
                 cta();
               }}
               key={id}>

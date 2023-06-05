@@ -4,7 +4,6 @@ import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import {OnboardingImage} from '../components/Containers';
 import Button from '../../../components/button/Button';
-import haptic from '../../../components/haptic-feedback/haptic';
 import {
   ActionContainer,
   CtaContainer,
@@ -47,7 +46,6 @@ const CreateOrImportKey: React.VFC<
   const askForTrackingThenNavigate = useRequestTrackingPermissionHandler();
 
   const onSkipPressRef = useRef(() => {
-    haptic('impactLight');
     askForTrackingThenNavigate(() => {
       navigation.navigate('TermsOfUse', {context: 'TOUOnly'});
     });

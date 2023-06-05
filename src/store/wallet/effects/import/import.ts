@@ -38,24 +38,15 @@ import {
 import {Platform} from 'react-native';
 import RNFS from 'react-native-fs';
 import {
-  biometricLockActive,
-  currentPin,
-  pinLockActive,
-  setAnnouncementsAccepted,
   setColorScheme,
   setDefaultAltCurrency,
   setHomeCarouselConfig,
   setIntroCompleted,
-  setKeyMigrationFailure,
   setOnboardingCompleted,
   showPortfolioValue,
-  successGenerateAppIdentity,
 } from '../../../app/app.actions';
 import {createContact} from '../../../contact/contact.actions';
 import {ContactRowProps} from '../../../../components/list/ContactRow';
-import {Network} from '../../../../constants';
-import {successPairingBitPayId} from '../../../bitpay-id/bitpay-id.actions';
-import {AppIdentity} from '../../../app/app.models';
 import {startUpdateAllKeyAndWalletStatus} from '../status/status';
 import {startGetRates} from '../rates/rates';
 import {
@@ -68,7 +59,6 @@ import {
   CoinbaseTokenProps,
 } from '../../../../api/coinbase/coinbase.types';
 import {coinbaseUpdateExchangeRate} from '../../../coinbase/coinbase.effects';
-import {hashPin} from '../../../../components/modal/pin/PinModal';
 import {navigationRef} from '../../../../Root';
 import {
   CardConfigMap,
@@ -81,9 +71,6 @@ import {StackActions} from '@react-navigation/native';
 import {BuyCryptoActions} from '../../../buy-crypto';
 import {SwapCryptoActions} from '../../../swap-crypto';
 import {
-  checkNotificationsPermissions,
-  setConfirmTxNotifications,
-  setNotifications,
   subscribePushNotifications,
   subscribeEmailNotifications,
 } from '../../../app/app.effects';
@@ -240,8 +227,6 @@ export const startMigration =
           errorStr = JSON.stringify(err);
         }
         dispatch(LogActions.info('Failed to migrate keys: ' + errorStr));
-        // flag for showing error modal
-        dispatch(setKeyMigrationFailure());
       }
 
       // config
@@ -254,45 +239,10 @@ export const startMigration =
           await RNFS.readFile(cordovaStoragePath + 'config', 'utf8'),
         );
 
-        const {
-          confirmedTxsNotifications,
-          emailNotifications,
-          pushNotifications,
-          offersAndPromotions,
-          productsUpdates,
-          totalBalance,
-          feeLevels,
-          theme,
-          lock,
-          wallet,
-        } = config || {};
+        const {emailNotifications, totalBalance, feeLevels, theme, wallet} =
+          config || {};
 
         emailNotificationsConfig = emailNotifications;
-
-        // push notifications
-        const systemEnabled = await checkNotificationsPermissions();
-        if (systemEnabled) {
-          if (pushNotifications?.enabled) {
-            dispatch(setNotifications(true));
-            if (confirmedTxsNotifications?.enabled) {
-              dispatch(setConfirmTxNotifications(true));
-            }
-            if (offersAndPromotions?.enabled || productsUpdates?.enabled) {
-              dispatch(setAnnouncementsAccepted(true));
-            }
-          }
-        }
-
-        // lock
-        if (lock) {
-          const {method, value} = lock;
-          if (method === 'pin') {
-            dispatch(currentPin(hashPin(value.split(''))));
-            dispatch(pinLockActive(true));
-          } else if (method === 'fingerprint') {
-            dispatch(biometricLockActive(true));
-          }
-        }
 
         // settings
         if (wallet) {
@@ -566,48 +516,6 @@ export const startMigration =
         dispatch(
           LogActions.info('Failed to migrate address book: ' + errorStr),
         );
-      }
-
-      // app identity
-      try {
-        dispatch(LogActions.info('[startMigration] - Migrating app identity'));
-        const identity = JSON.parse(
-          await RNFS.readFile(
-            cordovaStoragePath + 'appIdentity-livenet',
-            'utf8',
-          ),
-        ) as AppIdentity;
-        dispatch(LogActions.info('Successfully migrated app identity'));
-        dispatch(successGenerateAppIdentity(Network.mainnet, identity));
-      } catch (err: unknown) {
-        let errorStr;
-        if (err instanceof Error) {
-          errorStr = err.message;
-        } else {
-          errorStr = JSON.stringify(err);
-        }
-        dispatch(
-          LogActions.info('Failed to migrate app identity: ' + errorStr),
-        );
-      }
-
-      // bitpay id
-      try {
-        dispatch(LogActions.info('[startMigration] - Migrating bitpay id'));
-        const token = await RNFS.readFile(
-          cordovaStoragePath + 'bitpayIdToken-livenet',
-          'utf8',
-        );
-        dispatch(LogActions.info('Successfully migrated bitpay id'));
-        await dispatch(successPairingBitPayId(Network.mainnet, token));
-      } catch (err: unknown) {
-        let errorStr;
-        if (err instanceof Error) {
-          errorStr = err.message;
-        } else {
-          errorStr = JSON.stringify(err);
-        }
-        dispatch(LogActions.info('Failed to migrate bitpay id: ' + errorStr));
       }
 
       // coinbase
