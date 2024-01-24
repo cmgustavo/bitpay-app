@@ -94,7 +94,7 @@
 {
   [RCTLinkingManager application:application openURL:url options:options];
   [[AppsFlyerAttribution shared] handleOpenUrl:url options:options];
-  return YES;
+  return NO;
 }
 
 // Open URI-scheme for iOS 8 and below
@@ -105,7 +105,7 @@
   [RCTLinkingManager application:application openURL:url
                         sourceApplication:sourceApplication annotation:annotation];
   [[AppsFlyerAttribution shared] handleOpenUrl:url sourceApplication:sourceApplication annotation:annotation];
-  return YES;
+  return NO;
 }
 
 // Open Universal Links
@@ -116,7 +116,7 @@
                      continueUserActivity:userActivity
                        restorationHandler:restorationHandler];
   [[AppsFlyerAttribution shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
-  return YES;
+  return NO;
 } 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
 ///
