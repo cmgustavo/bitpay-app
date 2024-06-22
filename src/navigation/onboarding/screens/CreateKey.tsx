@@ -141,15 +141,15 @@ const CreateOrImportKey = ({
               {t('I already have a Key')}
             </Button>
           </ActionContainer>
-          <ActionContainer>
-            <Button
-              buttonStyle={'secondary'}
-              onPress={() => {
-                dispatch(AppActions.importLedgerModalToggled(true));
-              }}>
-              {t('Connect your Ledger Nano X')}
-            </Button>
-          </ActionContainer>
+          {/*<ActionContainer>*/}
+          {/*  <Button*/}
+          {/*    buttonStyle={'secondary'}*/}
+          {/*    onPress={() => {*/}
+          {/*      dispatch(AppActions.importLedgerModalToggled(true));*/}
+          {/*    }}>*/}
+          {/*    {t('Connect your Ledger Nano X')}*/}
+          {/*  </Button>*/}
+          {/*</ActionContainer>*/}
         </CtaContainer>
       </ScrollView>
     </CreateKeyContainer>
