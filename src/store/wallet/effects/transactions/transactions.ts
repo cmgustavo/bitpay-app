@@ -89,43 +89,54 @@ export const ProcessPendingTxps =
     const now = Math.floor(Date.now() / 1000);
     const {currencyAbbreviation, chain, tokenAddress} = wallet;
 
+    const ret: TransactionProposal[] = [];
     txps.forEach((tx: TransactionProposal) => {
-      // Filter out txps used for pay fees in other wallets
-      if (currencyAbbreviation !== tx.coin) {
-        return;
-      }
-      tx = dispatch(ProcessTx(tx, wallet));
+      try {
+        // Filter out txps used for pay fees in other wallets
+        if (currencyAbbreviation !== tx.coin) {
+          return;
+        }
+        tx = dispatch(ProcessTx(tx, wallet));
 
-      // no future transactions...
-      if (tx.createdOn > now) {
-        tx.createdOn = now;
-      }
+        // no future transactions...
+        if (tx.createdOn > now) {
+          tx.createdOn = now;
+        }
 
-      tx.copayerId = wallet.credentials.copayerId;
-      tx.walletId = wallet.credentials.walletId;
+        tx.copayerId = wallet.credentials.copayerId;
+        tx.walletId = wallet.credentials.walletId;
 
-      const action: any = tx.actions.find(
-        (a: any) => a.copayerId === wallet.credentials.copayerId,
-      );
+        const action: any = tx.actions.find(
+          (a: any) => a.copayerId === wallet.credentials.copayerId,
+        );
 
-      if ((!action || action.type === 'failed') && tx.status === 'pending') {
-        tx.pendingForUs = true;
-      }
+        if ((!action || action.type === 'failed') && tx.status === 'pending') {
+          tx.pendingForUs = true;
+        }
 
-      if (action && action.type === 'accept') {
-        tx.statusForUs = 'accepted';
-      } else if (action && action.type === 'reject') {
-        tx.statusForUs = 'rejected';
-      } else {
-        tx.statusForUs = 'pending';
-      }
+        if (action && action.type === 'accept') {
+          tx.statusForUs = 'accepted';
+        } else if (action && action.type === 'reject') {
+          tx.statusForUs = 'rejected';
+        } else {
+          tx.statusForUs = 'pending';
+        }
 
-      if (!tx.deleteLockTime) {
-        tx.canBeRemoved = true;
+        if (!tx.deleteLockTime) {
+          tx.canBeRemoved = true;
+        }
+        ret.push(tx);
+      } catch (e) {
+        const error = e instanceof Error ? e.message : JSON.stringify(e);
+        dispatch(
+          LogActions.error(
+            `The transaction proposal could not be processed correctly ${tx.id}: ${error}`,
+          ),
+        );
       }
     });
     return BuildUiFriendlyList(
-      txps,
+      ret,
       currencyAbbreviation,
       chain,
       [],
