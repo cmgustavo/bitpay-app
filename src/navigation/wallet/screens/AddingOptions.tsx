@@ -19,13 +19,17 @@ import {WalletGroupParamList} from '../WalletGroup';
 import MultisigOptions from './MultisigOptions';
 import {Option} from './CreationOptions';
 import {useTranslation} from 'react-i18next';
-import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
+import {useAppDispatch, useAppSelector, useLogger} from '../../../utils/hooks';
 import {Analytics} from '../../../store/analytics/analytics.effects';
-import {dismissOnGoingProcessModal} from '../../../store/app/app.actions';
+import {
+  dismissOnGoingProcessModal,
+  showBottomNotificationModal,
+} from '../../../store/app/app.actions';
 import {startOnGoingProcessModal} from '../../../store/app/app.effects';
 import {createMultipleWallets} from '../../../store/wallet/effects';
 import {getBaseAccountCreationCoinsAndTokens} from '../../../constants/currencies';
 import {successAddWallet} from '../../../store/wallet/wallet.actions';
+import {sleep} from '../../../utils/helper-methods';
 
 export type AddingOptionsParamList = {
   key: Key;
@@ -33,6 +37,7 @@ export type AddingOptionsParamList = {
 
 const AddingOptions: React.FC = () => {
   const {t} = useTranslation();
+  const logger = useLogger();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const route = useRoute<RouteProp<WalletGroupParamList, 'AddingOptions'>>();
@@ -45,6 +50,24 @@ const AddingOptions: React.FC = () => {
       headerTitleAlign: 'center',
     });
   }, [navigation, t]);
+
+  const showErrorModal = (e: string) => {
+    dispatch(
+      showBottomNotificationModal({
+        type: 'warning',
+        title: t('Something went wrong'),
+        message: e,
+        enableBackdropDismiss: true,
+        actions: [
+          {
+            text: t('OK'),
+            action: () => {},
+            primary: true,
+          },
+        ],
+      }),
+    );
+  };
 
   const optionList: Option[] = [
     {
@@ -77,22 +100,35 @@ const AddingOptions: React.FC = () => {
             context: 'AddingOptions',
           }),
         );
-        const _key = key.methods as KeyMethods;
-        await dispatch(startOnGoingProcessModal('ADDING_ACCOUNT'));
-        const wallets = await dispatch(
-          createMultipleWallets({
-            key: _key,
-            currencies: getBaseAccountCreationCoinsAndTokens(),
-            options: {
-              network,
-            },
-          }),
-        );
-        key.wallets.push(...(wallets as Wallet[]));
+        try {
+          const _key = key.methods as KeyMethods;
+          const currentAccountNumber = Math.max(
+            ...key.wallets.map(({credentials}) => credentials.account),
+          );
+          await dispatch(startOnGoingProcessModal('ADDING_ACCOUNT'));
+          const wallets = await dispatch(
+            createMultipleWallets({
+              key: _key,
+              currencies: getBaseAccountCreationCoinsAndTokens(),
+              options: {
+                network,
+                account: currentAccountNumber + 1,
+                customAccount: true,
+              },
+            }),
+          );
+          key.wallets.push(...(wallets as Wallet[]));
 
-        dispatch(successAddWallet({key}));
-        dispatch(dismissOnGoingProcessModal());
-        navigation.goBack();
+          dispatch(successAddWallet({key}));
+          dispatch(dismissOnGoingProcessModal());
+          navigation.goBack();
+        } catch (error: any) {
+          const errorMessage = error?.message || error;
+          logger.error(errorMessage);
+          dispatch(dismissOnGoingProcessModal());
+          await sleep(500);
+          showErrorModal(errorMessage);
+        }
       },
     },
     {

@@ -530,6 +530,11 @@ const createWallet =
                   ),
                 );
               }
+              case 'bwc.ErrorCONNECTION_ERROR': {
+                return reject(
+                  new Error(t('Error creating new wallet, please try again.')),
+                );
+              }
             }
 
             reject(err);
