@@ -130,6 +130,7 @@ import {
 import {WalletKitTypes} from '@reown/walletkit';
 import {Key, Wallet} from '../wallet/wallet.models';
 import {AppDispatch} from '../../utils/hooks';
+import {BrazeWrapper} from '../../lib/Braze';
 
 // Subscription groups (Braze)
 const PRODUCTS_UPDATES_GROUP_ID = __DEV__
@@ -511,6 +512,17 @@ export const initializeBrazeContent = (): Effect => (dispatch, getState) => {
       ),
     );
   } finally {
+    DeviceEventEmitter.addListener(
+      DeviceEmitterEvents.SHOULD_DELETE_BRAZE_USER,
+      async eid => {
+        // Wait for a few seconds to ensure the user is deleted
+        await sleep(20000);
+        LogActions.info('Deleting old user EID: ', eid);
+        await BrazeWrapper.delete(eid);
+        await sleep(3000);
+        BrazeWrapper.endMergingUser();
+      },
+    );
     dispatch(LogActions.info('Initializing Braze content complete.'));
   }
 };
