@@ -1,4 +1,3 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import styled from 'styled-components/native';
@@ -15,17 +14,13 @@ import {
   Paragraph,
 } from '../../../components/styled/Text';
 
-import {Network} from '../../../constants';
-import {RootState} from '../../../store';
-import ToggleSwitch from '../../../components/toggle-switch/ToggleSwitch';
-import {ShopActions, ShopEffects} from '../../../store/shop';
 import {
   LightBlack,
   NeutralSlate,
   Slate,
   SlateDark,
 } from '../../../styles/colors';
-import {BitpayIdScreens, BitpayIdGroupParamList} from '../BitpayIdGroup';
+import {BitpayIdScreens} from '../BitpayIdGroup';
 import {TouchableOpacity} from '@components/base/TouchableOpacity';
 import {useNavigation} from '@react-navigation/native';
 import ChevronRight from '../components/ChevronRight';
@@ -33,11 +28,6 @@ import {BitPayIdEffects} from '../../../store/bitpay-id';
 import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
 import {SectionSpacer} from '../../tabs/shop/components/styled/ShopTabComponents';
 import {SecurityScreens} from '../../tabs/settings/security/SecurityGroup';
-
-type ProfileProps = NativeStackScreenProps<
-  BitpayIdGroupParamList,
-  BitpayIdScreens.PROFILE
->;
 
 const ProfileSettingsScreenContainer = styled.SafeAreaView`
   flex: 1;
@@ -105,14 +95,11 @@ const SettingsSectionDescription = styled(BaseText)`
   line-height: 18px;
 `;
 
-export const ProfileSettingsScreen = ({route}: ProfileProps) => {
+export const ProfileSettingsScreen = () => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const network = useSelector<RootState, Network>(({APP}) => APP.network);
-  const syncGiftCardPurchasesWithBitPayId = useAppSelector(
-    ({SHOP}) => SHOP.syncGiftCardPurchasesWithBitPayId,
-  );
+  const network = useAppSelector(({APP}) => APP.network);
   const user = useAppSelector(({BITPAY_ID}) => BITPAY_ID.user[network]);
   const apiToken = useAppSelector(
     ({APP, BITPAY_ID}) => BITPAY_ID.apiToken[APP.network],
