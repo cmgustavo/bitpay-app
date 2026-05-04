@@ -99,6 +99,8 @@ export enum AppActionTypes {
   IN_APP_BROWSER_OPEN = 'APP/IN_APP_BROWSER_OPEN',
   SHOW_ARCHAX_BANNER = 'APP/SHOW_ARCHAX_BANNER',
   DISMISS_MARKETING_CONTENT_CARD = 'APP/DISMISS_MARKETING_CONTENT_CARD',
+  DISMISS_KYC_HOME_BANNER = 'APP/DISMISS_KYC_HOME_BANNER',
+  RESET_KYC_HOME_BANNER = 'APP/RESET_KYC_HOME_BANNER',
 }
 
 interface ImportLedgerModalToggled {
@@ -454,6 +456,14 @@ interface DismissMarketingContentCard {
   payload: string;
 }
 
+interface DismissKycHomeBanner {
+  type: typeof AppActionTypes.DISMISS_KYC_HOME_BANNER;
+}
+
+interface ResetKycHomeBanner {
+  type: typeof AppActionTypes.RESET_KYC_HOME_BANNER;
+}
+
 export type AppActionType =
   | NetworkChanged
   | SuccessAppInit
@@ -531,4 +541,6 @@ export type AppActionType =
   | ShowWalletConnectStartModal
   | DismissWalletConnectStartModal
   | ShowArchaxBanner
-  | DismissMarketingContentCard;
+  | DismissMarketingContentCard
+  | DismissKycHomeBanner
+  | ResetKycHomeBanner;

@@ -171,6 +171,7 @@ export interface AppState {
   tokensDataLoaded: boolean;
   showArchaxBanner: boolean;
   dismissedMarketingCardIds: string[];
+  kycHomeBannerDismissed: boolean;
 }
 
 const initialState: AppState = {
@@ -272,6 +273,7 @@ const initialState: AppState = {
   tokensDataLoaded: false,
   showArchaxBanner: false,
   dismissedMarketingCardIds: [],
+  kycHomeBannerDismissed: false,
 };
 
 export const appReducer = (
@@ -826,6 +828,12 @@ export const appReducer = (
         dismissedMarketingCardIds: [...state.dismissedMarketingCardIds, cardId],
       };
     }
+
+    case AppActionTypes.DISMISS_KYC_HOME_BANNER:
+      return {...state, kycHomeBannerDismissed: true};
+
+    case AppActionTypes.RESET_KYC_HOME_BANNER:
+      return {...state, kycHomeBannerDismissed: false};
 
     default:
       return state;

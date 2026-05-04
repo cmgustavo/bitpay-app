@@ -7,15 +7,11 @@ import {
   ActiveOpacity,
   ScreenGutter,
 } from '../../../components/styled/Containers';
+import {BaseText, H3, H5, Paragraph} from '../../../components/styled/Text';
 import {
-  BaseText,
-  H3,
-  H5,
-  Link,
-  Paragraph,
-} from '../../../components/styled/Text';
-import {
+  Action,
   LightBlack,
+  LightBlue,
   NeutralSlate,
   Slate,
   SlateDark,
@@ -28,6 +24,9 @@ import {BitPayIdEffects} from '../../../store/bitpay-id';
 import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
 import {SectionSpacer} from '../../tabs/shop/components/styled/ShopTabComponents';
 import {SecurityScreens} from '../../tabs/settings/security/SecurityGroup';
+import {SumSubKycStatus} from '../../../store/sumsub/sumsub.reducer';
+import IconHomeIdentityVerified from '../../../../assets/img/home_identity_verified.svg';
+import AngleRight from '../../../../assets/img/settings-arrow-right.svg';
 
 type ProfileProps = NativeStackScreenProps<
   BitpayIdGroupParamList,
@@ -47,7 +46,6 @@ const ProfileInfoContainer = styled.View`
   display: flex;
   align-items: center;
   margin: 50px 0 36px;
-  background-color: ${({theme: {dark}}) => (dark ? LightBlack : NeutralSlate)};
   border-radius: 12px;
   padding: 20px;
   padding-bottom: 25px;
@@ -65,6 +63,79 @@ const EmailAddress = styled(Paragraph)`
 const EmailAddressNotVerified = styled(Paragraph)`
   font-size: 14px;
 `;
+
+const StatusPill = styled(TouchableOpacity)`
+  background-color: ${({theme: {dark}}) => (dark ? LightBlack : LightBlue)};
+  border-radius: 50px;
+  padding: 8px 16px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: 'center';
+  gap: 8px;
+`;
+
+const StatusPillText = styled(BaseText)`
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: ${({theme: {dark}}) => (dark ? SlateDark : Action)};
+`;
+
+type StatusPillConfig = {
+  label: string;
+  navigable: boolean;
+  emailRequired?: boolean;
+};
+
+function getStatusPillConfig(
+  userVerified: boolean | undefined,
+  kycStatus: SumSubKycStatus,
+  t: (key: string) => string,
+): StatusPillConfig | null {
+  if (!userVerified) {
+    return {
+      label: t('Verify Email'),
+      navigable: true,
+      emailRequired: true,
+    };
+  }
+  if (kycStatus === 'Approved') {
+    return {
+      label: t('Identity Verified'),
+      navigable: false,
+    };
+  }
+  if (kycStatus === 'FinallyRejected') {
+    return {
+      label: t('Application Denied'),
+      navigable: true,
+    };
+  }
+  if (kycStatus === 'TemporarilyDeclined') {
+    return {
+      label: t('Action Required'),
+      navigable: true,
+    };
+  }
+  if (kycStatus === 'Pending') {
+    return {
+      label: t('Application in Review'),
+      navigable: false,
+    };
+  }
+  if (kycStatus === 'Incomplete') {
+    return {
+      label: t('Continue Application'),
+      navigable: true,
+    };
+  }
+  return {
+    label: t('Verify Identity'),
+    navigable: true,
+  };
+}
 
 const SettingsSection = styled.View`
   flex-direction: row;
@@ -106,9 +177,12 @@ export const ProfileSettingsScreen = ({}: ProfileProps) => {
   const navigation = useNavigation();
   const network = useAppSelector(({APP}) => APP.network);
   const user = useAppSelector(({BITPAY_ID}) => BITPAY_ID.user[network]);
+  console.log('##### USER', user);
   const apiToken = useAppSelector(
     ({APP, BITPAY_ID}) => BITPAY_ID.apiToken[APP.network],
   );
+
+  const kycStatus = useAppSelector(({SUMSUB}) => SUMSUB.kycStatus?.[network]);
 
   useEffect(() => {
     dispatch(BitPayIdEffects.startFetchSession());
@@ -139,16 +213,27 @@ export const ProfileSettingsScreen = ({}: ProfileProps) => {
           ) : null}
 
           <EmailAddress>{user.email}</EmailAddress>
-          {!user.verified ? (
-            <EmailAddressNotVerified>
-              <Link
-                testID="resend-link-button"
-                accessibilityLabel="Verify email address"
-                onPress={() => navigation.navigate('VerifyEmail')}>
-                {t('Verify email address')}
-              </Link>
-            </EmailAddressNotVerified>
-          ) : null}
+          {(() => {
+            const pillConfig = getStatusPillConfig(user.verified, kycStatus, t);
+            if (!pillConfig) {
+              return null;
+            }
+            return (
+              <StatusPill
+                activeOpacity={pillConfig.navigable ? ActiveOpacity : 1}
+                onPress={() => {
+                  if (pillConfig.emailRequired && !user.verified) {
+                    navigation.navigate('VerifyEmail');
+                  } else if (pillConfig.navigable) {
+                    navigation.navigate(BitpayIdScreens.VERIFY_IDENTITY);
+                  }
+                }}>
+                {user.verified ? <IconHomeIdentityVerified width={16} /> : null}
+                <StatusPillText>{pillConfig.label}</StatusPillText>
+                {pillConfig.navigable ? <AngleRight width={20} /> : null}
+              </StatusPill>
+            );
+          })()}
         </ProfileInfoContainer>
 
         {user.verified ? (

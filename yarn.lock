@@ -5129,6 +5129,11 @@
     resolve-from "^5.0.0"
     ts-dedent "^1.1.0"
 
+"@sumsub/react-native-mobilesdk-module@1.42.0":
+  version "1.42.0"
+  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.42.0.tgz#ee7cc407d2ccf6abe40074f7835d46de41904ce7"
+  integrity sha512-uedsNMjgWUyu4NPkOjmZ2/d5SD6Jx5TNKNUULV7TqSRqzgxzYgmzEn8KvMJiCkCrl6HpA03cRXYVQW6M06wIMw==
+
 "@svgr/babel-plugin-add-jsx-attribute@8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-8.0.0.tgz#4001f5d5dd87fa13303e36ee106e3ff3a7eb8b22"
