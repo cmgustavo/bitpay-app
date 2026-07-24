@@ -1,5 +1,4 @@
 import BitPayIdApi from '../bitpay';
-import {SUMSUB_LEVEL_NAME} from '@env';
 
 // Signed /api/v2 RPC methods (map to BitPayUser.* server-side, same channel DI uses).
 export const GET_KYC_ACCESS_TOKEN_METHOD = 'getKycAccessToken';
@@ -33,7 +32,7 @@ const fetchAccessToken = async (apiToken: string): Promise<string | null> => {
   const result = await BitPayIdApi.apiCall(
     apiToken,
     GET_KYC_ACCESS_TOKEN_METHOD,
-    {levelName: SUMSUB_LEVEL_NAME},
+    {},
   );
   // apiCall does `res.data.data || res.data`, so a null token surfaces as the
   // `{data: null}` envelope. Only a non-empty string is a real token.

@@ -8,7 +8,6 @@ import Button from '../../../../../components/button/Button';
 import {useAppDispatch, useAppSelector} from '../../../../../utils/hooks';
 import {SumSubEffects} from '../../../../../store/sumsub';
 import {Network} from '../../../../../constants';
-import {SUMSUB_LEVEL_NAME} from '@env';
 import {
   White,
   SlateDark,
@@ -156,9 +155,6 @@ const KycVerification: React.FC = () => {
           <DevBanner>
             <DevBannerTitle>{'Dev mode (testnet)'}</DevBannerTitle>
             <DevBannerRow>{`network: ${network}`}</DevBannerRow>
-            <DevBannerRow>{`levelName: ${
-              SUMSUB_LEVEL_NAME || '(unset)'
-            }`}</DevBannerRow>
             <DevBannerRow>{`kycStatus: ${kycStatus ?? 'null'}`}</DevBannerRow>
           </DevBanner>
         )}

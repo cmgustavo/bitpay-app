@@ -9,8 +9,6 @@ import {
 } from './index';
 import BitPayIdApi from '../bitpay';
 
-jest.mock('@env', () => ({SUMSUB_LEVEL_NAME: 'basic-kyc-level'}));
-
 jest.mock('../bitpay', () => ({
   __esModule: true,
   default: {apiCall: jest.fn()},
@@ -26,7 +24,7 @@ beforeEach(() => {
 });
 
 describe('SumSubApi.fetchAccessToken', () => {
-  it('mints the token via the signed /api/v2 RPC with the level name', async () => {
+  it('mints the token via the signed /api/v2 RPC', async () => {
     mockApiCall.mockResolvedValue(ACCESS_TOKEN);
 
     await SumSubApi.fetchAccessToken(API_TOKEN);
@@ -35,7 +33,7 @@ describe('SumSubApi.fetchAccessToken', () => {
     expect(mockApiCall).toHaveBeenCalledWith(
       API_TOKEN,
       GET_KYC_ACCESS_TOKEN_METHOD,
-      {levelName: 'basic-kyc-level'},
+      {},
     );
   });
 

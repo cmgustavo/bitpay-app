@@ -35,7 +35,6 @@ declare module '@env' {
   export const SENTRY_DSN: string;
   export const REGTEST_BASE_BITPAY_URL: string;
   export const STATIC_CONTENT_CARDS_ENABLED: string;
-  export const SUMSUB_LEVEL_NAME: string;
 }
 
 declare module '@sumsub/react-native-mobilesdk-module' {
