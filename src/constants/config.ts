@@ -38,7 +38,7 @@ export const RESOLVED_DEEP_LINK_HOSTS = [
 // GENERAL
 export const APP_NAME = 'bitpay';
 export const APP_NAME_UPPERCASE = 'BitPay';
-export const APP_NETWORK = Network.mainnet;
+export const APP_NETWORK = Network.testnet;
 export const APP_VERSION = version;
 export const BASE_BITPAY_URLS = {
   [Network.mainnet]: 'https://bitpay.com',
